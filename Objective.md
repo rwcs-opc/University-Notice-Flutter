@@ -1,9 +1,9 @@
-# University-Notice-Flutter
+# University Notice Management System
+Build a **complete production-ready Flutter application** named **University Notice Management System** with **Flutter (latest stable)** for frontend and **Laravel REST API + MySQL** for backend.
+
 ## Core Objective
 
 Create a secure centralized platform where universities can publish, manage, and distribute notices digitally. Users can register/login, view notices by category, receive alerts, and admins can manage notices through role-based dashboards.
-- Build a **complete production-ready Flutter application** named **University Notice Management System** with **Flutter (latest stable)** for frontend and **Laravel REST API + MySQL** for backend.
-
 
 ---
 
@@ -294,3 +294,5 @@ Generate full source code with:
 7. README setup guide
 
 ---
+
+# Git commands
