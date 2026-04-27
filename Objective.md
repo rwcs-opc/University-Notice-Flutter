@@ -296,3 +296,8 @@ Generate full source code with:
 ---
 
 # Git commands
+git checkout milan-sharma
+
+git add .
+git commit -m 'Note of modifications'
+git push -u origin milan-sharma
