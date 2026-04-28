@@ -12,6 +12,7 @@ class LoginScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               decoration: InputDecoration(
@@ -33,6 +34,7 @@ class LoginScreen extends StatelessWidget {
               child: Text("Login"),
             ),
           ],
+          
         ),
       ),
     );
