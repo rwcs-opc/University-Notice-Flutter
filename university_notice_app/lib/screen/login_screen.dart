@@ -6,6 +6,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       
       body: Center(
         child: Padding(
@@ -32,11 +33,40 @@ class LoginScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
+
+
+              //foget ppassword
+              Align(
+  alignment: Alignment.centerRight,
+  child: TextButton(
+    onPressed: () {
+      // Navigate to forgot password screen
+    },
+    child: const Text("Forgot Password?"),
+  ),
+),
+
+
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {},
                 child: Text("Login"),
               ),
+              //sing up now
+              Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    const Text("Don't have an account?"),
+    TextButton(
+      onPressed: () {
+        // Navigate to sign up screen
+      },
+      child: const Text("Sign Up"),
+    ),
+  ],
+),
+
+
             ],
             
           ),
