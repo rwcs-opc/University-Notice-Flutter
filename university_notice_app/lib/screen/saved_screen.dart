@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../Home/notice_detail_screen.dart';
 // Modern Production Style Saved Notices Screen
 
 class SavedScreen extends StatelessWidget {
@@ -148,9 +148,25 @@ class SavedScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     onTap: () {
 
-                      // OPEN NOTICE DETAIL
+  Navigator.push(
 
-                    },
+    context,
+
+    MaterialPageRoute(
+
+      builder: (context) => NoticeDetailScreen(
+
+        title: notice["title"],
+        category: notice["category"],
+        department: notice["department"],
+        date: notice["date"],
+        views: notice["views"],
+        urgent: notice["urgent"],
+
+      ),
+    ),
+  );
+},
 
                     child: Card(
                     elevation: 2.5,
