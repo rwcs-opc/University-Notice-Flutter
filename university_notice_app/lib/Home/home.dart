@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
 
-      // ================= APP BAR =================
+      
       appBar: AppBar(
         backgroundColor: Colors.blue,
         elevation: 0,
@@ -113,7 +113,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      // ================= DRAWER =================
+     
       drawer: Drawer(
         child: ListView(
           children: const [
@@ -173,13 +173,13 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      // ================= BODY =================
+     
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ================= SEARCH BAR =================
+            
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
@@ -196,7 +196,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // ================= CATEGORY TITLE =================
+           
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -210,7 +210,7 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // ================= CATEGORY LIST =================
+           
             SizedBox(
               height: 110,
               child: ListView.builder(
@@ -256,7 +256,7 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // ================= URGENT SECTION =================
+            
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -270,7 +270,6 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // ================= NOTICE LIST =================
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -296,7 +295,7 @@ class HomePage extends StatelessWidget {
                             CrossAxisAlignment.start,
                         children: [
 
-                          // ================= BADGE =================
+                          
                           if (notice["urgent"] == true)
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -319,7 +318,7 @@ class HomePage extends StatelessWidget {
 
                           const SizedBox(height: 12),
 
-                          // ================= TITLE =================
+                          
                           Text(
                             notice["title"],
                             style: const TextStyle(
@@ -330,7 +329,7 @@ class HomePage extends StatelessWidget {
 
                           const SizedBox(height: 10),
 
-                          // ================= DETAILS =================
+                          
                           Row(
                             children: [
                               const Icon(
@@ -379,7 +378,7 @@ class HomePage extends StatelessWidget {
 
                           const SizedBox(height: 15),
 
-                          // ================= BOTTOM ROW =================
+                          
                           Row(
                             mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
@@ -424,7 +423,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      // ================= BOTTOM NAVIGATION =================
+     
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         selectedItemColor: Colors.blue,
