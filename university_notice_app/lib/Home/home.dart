@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'notice_detail_screen.dart';
 void main() {
   runApp(const UniversityNoticeApp());
 }
@@ -279,142 +279,186 @@ class HomePage extends StatelessWidget {
                 final notice = notices[index];
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+  padding: const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 8,
+  ),
+
+  child: GestureDetector(
+
+    onTap: () {
+
+      Navigator.push(
+
+        context,
+
+        MaterialPageRoute(
+
+          builder: (context) => NoticeDetailScreen(
+
+            title: notice["title"],
+            category: notice["category"],
+            department: notice["department"],
+            date: notice["date"],
+            views: notice["views"],
+            urgent: notice["urgent"],
+
+          ),
+        ),
+      );
+
+    },
+
+    child: Card(
+
+      elevation: 4,
+
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+      ),
+
+      child: Padding(
+
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+
+            // URGENT BADGE
+            if (notice["urgent"] == true)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 5,
+                ),
+
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+
+                child: const Text(
+                  "URGENT",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+
+            const SizedBox(height: 12),
+
+            // TITLE
+            Text(
+              notice["title"],
+
+              style: const TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            // DEPARTMENT
+            Row(
+              children: [
+
+                const Icon(
+                  Icons.account_balance,
+                  size: 18,
+                  color: Colors.grey,
+                ),
+
+                const SizedBox(width: 6),
+
+                Text(notice["department"]),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+
+            // CATEGORY
+            Row(
+              children: [
+
+                const Icon(
+                  Icons.category,
+                  size: 18,
+                  color: Colors.grey,
+                ),
+
+                const SizedBox(width: 6),
+
+                Text(notice["category"]),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+
+            // DATE
+            Row(
+              children: [
+
+                const Icon(
+                  Icons.calendar_month,
+                  size: 18,
+                  color: Colors.grey,
+                ),
+
+                const SizedBox(width: 6),
+
+                Text(notice["date"]),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            // BOTTOM ROW
+            Row(
+
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+
+              children: [
+
+                Row(
+                  children: const [
+
+                    Icon(
+                      Icons.picture_as_pdf,
+                      color: Colors.red,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
 
-                          
-                          if (notice["urgent"] == true)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius:
-                                    BorderRadius.circular(20),
-                              ),
-                              child: const Text(
-                                "URGENT",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                    SizedBox(width: 5),
 
-                          const SizedBox(height: 12),
+                    Text("PDF"),
+                  ],
+                ),
 
-                          
-                          Text(
-                            notice["title"],
-                            style: const TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                Row(
+                  children: [
 
-                          const SizedBox(height: 10),
+                    const Icon(Icons.visibility),
 
-                          
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.account_balance,
-                                size: 18,
-                                color: Colors.grey,
-                              ),
+                    const SizedBox(width: 5),
 
-                              const SizedBox(width: 6),
-
-                              Text(notice["department"]),
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.category,
-                                size: 18,
-                                color: Colors.grey,
-                              ),
-
-                              const SizedBox(width: 6),
-
-                              Text(notice["category"]),
-                            ],
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.calendar_month,
-                                size: 18,
-                                color: Colors.grey,
-                              ),
-
-                              const SizedBox(width: 6),
-
-                              Text(notice["date"]),
-                            ],
-                          ),
-
-                          const SizedBox(height: 15),
-
-                          
-                          Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                            children: [
-
-                              Row(
-                                children: const [
-                                  Icon(
-                                    Icons.picture_as_pdf,
-                                    color: Colors.red,
-                                  ),
-
-                                  SizedBox(width: 5),
-
-                                  Text("PDF"),
-                                ],
-                              ),
-
-                              Row(
-                                children: [
-                                  const Icon(Icons.visibility),
-
-                                  const SizedBox(width: 5),
-
-                                  Text(
-                                    notice["views"].toString(),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    Text(
+                      notice["views"].toString(),
                     ),
-                  ),
-                );
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+);
               },
             ),
 
