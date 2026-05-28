@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
+import 'package:university_notice_app/Home/home.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -48,11 +49,28 @@ class LoginScreen extends StatelessWidget {
 ),
 
 
+              // SizedBox(height: 30),
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   child: Text("Login"),
+              // ),
+
               SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Login"),
-              ),
+
+ElevatedButton(
+  onPressed: () {
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
+
+  },
+
+  child: const Text("Login"),
+),
               //sing up now
               Row(
   mainAxisAlignment: MainAxisAlignment.center,
