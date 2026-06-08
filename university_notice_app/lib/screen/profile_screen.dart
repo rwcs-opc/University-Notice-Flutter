@@ -1,5 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'notification_screen.dart';
+import 'saved_screen.dart';
+import 'edit_profile_screen.dart';
+import '../screen/change_password_screen.dart';
+import '../screen/setting_screen.dart';
+import '../screen/help_and_support.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -145,40 +152,106 @@ class ProfileScreen extends StatelessWidget {
                 children: [
 
                   profileTile(
-                    Icons.person,
-                    "Edit Profile",
-                    Colors.blue,
-                  ),
+  Icons.person,
+  "Edit Profile",
+  Colors.blue,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const EditProfileScreen(),
+      ),
+    );
+  },
+),
 
                   profileTile(
-                    Icons.notifications,
-                    "Notifications",
-                    Colors.orange,
-                  ),
+  Icons.notifications,
+  "Notifications",
+  Colors.orange,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const NotificationScreen(),
+      ),
+    );
+  },
+),
 
                   profileTile(
-                    Icons.bookmark,
-                    "Saved Notices",
-                    Colors.green,
-                  ),
+  Icons.bookmark,
+  "Saved Notices",
+  Colors.green,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SavedScreen(),
+      ),
+    );
+  },
+),
 
                   profileTile(
-                    Icons.lock,
-                    "Change Password",
-                    Colors.purple,
-                  ),
+  Icons.lock,
+  "Change Password",
+  Colors.red,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const ChangePasswordScreen(),
+      ),
+    );
+  },
+),
 
                   profileTile(
-                    Icons.settings,
-                    "Settings",
-                    Colors.teal,
-                  ),
+  Icons.settings,
+  "Settings",
+  Colors.grey,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const SettingsScreen(),
+      ),
+    );
+  },
+),
 
                   profileTile(
-                    Icons.help,
-                    "Help & Support",
-                    Colors.redAccent,
-                  ),
+  Icons.help_outline,
+  "Help & Support",
+  Colors.orange,
+  () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const HelpSupportScreen(),
+      ),
+    );
+  },
+),
+profileTile(
+  Icons.logout,
+  "Logout",
+  Colors.red,
+  () {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const LoginScreen(),
+      ),
+      (route) => false,
+    );
+  },
+),
                 ],
               ),
             ),
@@ -225,52 +298,53 @@ class ProfileScreen extends StatelessWidget {
   }
 
   // PROFILE TILE WIDGET
-  Widget profileTile(
-    IconData icon,
-    String title,
-    Color color,
-  ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+ Widget profileTile(
+  IconData icon,
+  String title,
+  Color color,
+  VoidCallback onTap,
+) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 15),
 
-      child: Card(
-        elevation: 2,
+    child: Card(
+      elevation: 2,
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 8,
-          ),
-
-          leading: CircleAvatar(
-            backgroundColor: color.withOpacity(0.15),
-
-            child: Icon(
-              icon,
-              color: color,
-            ),
-          ),
-
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-
-          trailing: const Icon(
-            Icons.arrow_forward_ios,
-            size: 18,
-          ),
-
-          onTap: () {},
-        ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
       ),
-    );
-  }
+
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 8,
+        ),
+
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.15),
+
+          child: Icon(
+            icon,
+            color: color,
+          ),
+        ),
+
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 18,
+        ),
+
+        onTap: onTap, // <-- use the passed function
+      ),
+    ),
+  );
+}
 }
