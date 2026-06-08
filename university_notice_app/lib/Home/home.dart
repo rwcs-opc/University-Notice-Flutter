@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'notice_detail_screen.dart';
+import '../screen/notification_screen.dart';
 import '../screen/category_notices_screen.dart';
 void main() {
   runApp(const UniversityNoticeApp());
@@ -96,22 +97,24 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-          ),
-        ],
+        actions: [
+  IconButton(
+    icon: const Icon(
+      Icons.notifications,
+      color: Colors.white,
+    ),
+
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              const NotificationScreen(),
+        ),
+      );
+    },
+  ),
+],
       ),
 
      
