@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'notice_detail_screen.dart';
+import '../screen/category_notices_screen.dart';
 void main() {
   runApp(const UniversityNoticeApp());
 }
@@ -220,10 +221,30 @@ class HomePage extends StatelessWidget {
 
                   final category = categories[index];
 
-                  return Container(
-                    width: 90,
-                    margin: const EdgeInsets.only(left: 16),
-                    child: Column(
+                  // return Container(
+                  //   width: 90,
+                  //   margin: const EdgeInsets.only(left: 16),
+                  //   child: Column(
+                  return GestureDetector(
+
+  onTap: () {
+
+    Navigator.push(
+      context,
+
+      MaterialPageRoute(
+        builder: (context) => CategoryNoticesScreen(
+          categoryName: category["title"],
+        ),
+      ),
+    );
+  },
+
+  child: Container(
+    width: 90,
+    margin: const EdgeInsets.only(left: 16),
+
+    child: Column(
                       children: [
                         Container(
                           height: 70,
@@ -249,6 +270,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    )
                   );
                 },
               ),
