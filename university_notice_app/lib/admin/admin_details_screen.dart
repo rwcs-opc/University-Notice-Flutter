@@ -237,7 +237,7 @@ class AdminDetailsScreen extends StatelessWidget {
       return Icons.people;
     }
 
-    if (title.contains("Pendin")) {
+    if (title.contains("Pending")) {
       return Icons.pending_actions;
     }
 
