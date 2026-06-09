@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../screen/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -66,11 +68,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               value: darkMode,
 
+              // onChanged: (value) {
+              //   setState(() {
+              //     darkMode = value;
+              //   });
+              // },
               onChanged: (value) {
-                setState(() {
-                  darkMode = value;
-                });
-              },
+                 Provider.of<ThemeNotifier>(
+    context,
+    listen: false,
+  ).toggleTheme(value);
+
+  setState(() {
+    darkMode = value;
+  });
+},
             ),
           ),
 

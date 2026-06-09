@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:university_notice_app/screen/login_screen.dart';
+import 'package:provider/provider.dart';
 
-
+import 'screen/login_screen.dart';
+import 'screen/theme_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,9 +18,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+
+    final themeProvider =
+        Provider.of<ThemeNotifier>(context);
+
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+
+      theme: ThemeData.light(),
+
+      darkTheme: ThemeData.dark(),
+
+      themeMode: themeProvider.currentTheme,
+
+      home: const LoginScreen(),
     );
   }
 }
