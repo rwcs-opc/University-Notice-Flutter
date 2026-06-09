@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'create_notice.dart';
+
+import 'category_management.dart';
+import 'department_management.dart';
+import 'admin_details_screen.dart';
+import 'user_management.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -12,35 +18,24 @@ class AdminDashboard extends StatelessWidget {
         backgroundColor: Colors.blue,
         title: const Text(
           "Admin Dashboard",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-          )
+            child: Icon(Icons.notifications, color: Colors.white),
+          ),
         ],
       ),
 
       drawer: Drawer(
         child: ListView(
           children: const [
-
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
+              decoration: BoxDecoration(color: Colors.blue),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.white,
@@ -73,46 +68,46 @@ class AdminDashboard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
 
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-
               const Text(
                 "Welcome Admin 👋",
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 6),
 
               Text(
                 "Manage notices and university activities",
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                ),
+                style: TextStyle(color: Colors.grey.shade600),
               ),
 
               const SizedBox(height: 20),
 
               GridView.count(
                 shrinkWrap: true,
-                physics:
-                    const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 1.25,
+                childAspectRatio: 0.95,
 
-                children: const [
-
+                children: [
                   DashboardCard(
                     title: "Total Notices",
                     value: "120",
                     icon: Icons.description,
                     color: Colors.blue,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              const AdminDetailsScreen(title: "Total Notices"),
+                        ),
+                      );
+                    },
                   ),
 
                   DashboardCard(
@@ -120,6 +115,15 @@ class AdminDashboard extends StatelessWidget {
                     value: "250",
                     icon: Icons.people,
                     color: Colors.green,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              const AdminDetailsScreen(title: "Users"),
+                        ),
+                      );
+                    },
                   ),
 
                   DashboardCard(
@@ -127,6 +131,16 @@ class AdminDashboard extends StatelessWidget {
                     value: "15",
                     icon: Icons.pending_actions,
                     color: Colors.orange,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminDetailsScreen(
+                            title: "Pending Notices",
+                          ),
+                        ),
+                      );
+                    },
                   ),
 
                   DashboardCard(
@@ -134,6 +148,16 @@ class AdminDashboard extends StatelessWidget {
                     value: "105",
                     icon: Icons.check_circle,
                     color: Colors.purple,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminDetailsScreen(
+                            title: "Published Notices",
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -142,36 +166,47 @@ class AdminDashboard extends StatelessWidget {
 
               const Text(
                 "Quick Actions",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 15),
 
               GridView.count(
                 shrinkWrap: true,
-                physics:
-                    const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
 
                 children: [
-
                   actionCard(
                     context,
                     "Create Notice",
                     Icons.add_circle,
                     Colors.blue,
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateNoticeScreen(),
+                        ),
+                      );
+                    },
                   ),
-
                   actionCard(
                     context,
                     "Categories",
                     Icons.category,
                     Colors.orange,
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const CategoryManagementScreen(),
+                        ),
+                      );
+                    },
                   ),
 
                   actionCard(
@@ -179,14 +214,25 @@ class AdminDashboard extends StatelessWidget {
                     "Departments",
                     Icons.school,
                     Colors.green,
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const DepartmentManagementScreen(),
+                        ),
+                      );
+                    },
                   ),
 
-                  actionCard(
-                    context,
-                    "Users",
-                    Icons.people,
-                    Colors.purple,
-                  ),
+                  actionCard(context, "Users", Icons.people, Colors.purple, () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UserManagementScreen(),
+                      ),
+                    );
+                  }),
                 ],
               ),
 
@@ -194,28 +240,16 @@ class AdminDashboard extends StatelessWidget {
 
               const Text(
                 "Recent Notices",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 10),
 
-              recentNotice(
-                "Semester Exam Schedule Released",
-                "Academic",
-              ),
+              recentNotice("Semester Exam Schedule Released", "Academic"),
 
-              recentNotice(
-                "Campus Placement Drive",
-                "Placement",
-              ),
+              recentNotice("Campus Placement Drive", "Placement"),
 
-              recentNotice(
-                "Scholarship Application Open",
-                "Scholarship",
-              ),
+              recentNotice("Scholarship Application Open", "Scholarship"),
             ],
           ),
         ),
@@ -228,54 +262,49 @@ class AdminDashboard extends StatelessWidget {
     String title,
     IconData icon,
     Color color,
+    VoidCallback onTap,
   ) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
 
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
 
-        onTap: () {},
+      child: Card(
+        elevation: 4,
 
-        child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
 
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.all(16),
 
-            Icon(
-              icon,
-              color: color,
-              size: 40,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
 
-            const SizedBox(height: 10),
+            children: [
+              Icon(icon, color: color, size: 35),
 
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 10),
+
+              Text(
+                title,
+                textAlign: TextAlign.center,
+
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  static Widget recentNotice(
-    String title,
-    String category,
-  ) {
+  static Widget recentNotice(String title, String category) {
     return Card(
       child: ListTile(
-        leading: const CircleAvatar(
-          child: Icon(Icons.description),
-        ),
+        leading: const CircleAvatar(child: Icon(Icons.description)),
         title: Text(title),
         subtitle: Text(category),
       ),
@@ -284,11 +313,11 @@ class AdminDashboard extends StatelessWidget {
 }
 
 class DashboardCard extends StatelessWidget {
-
   final String title;
   final String value;
   final IconData icon;
   final Color color;
+  final VoidCallback onTap;
 
   const DashboardCard({
     super.key,
@@ -296,50 +325,44 @@ class DashboardCard extends StatelessWidget {
     required this.value,
     required this.icon,
     required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
 
-      shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.circular(18),
-      ),
+      child: Card(
+        elevation: 4,
 
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
 
-        child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
 
-          children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-            Icon(
-              icon,
-              color: color,
-              size: 35,
-            ),
+            children: [
+              Icon(icon, color: color, size: 35),
 
-            const SizedBox(height: 10),
-
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 5),
-
-            Text(
-              title,
-              textAlign: TextAlign.center,
-            ),
-          ],
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,55 +1,43 @@
 import 'package:flutter/material.dart';
 
-class DepartmentManagementScreen extends StatefulWidget {
-  const DepartmentManagementScreen({super.key});
+class AdminNoticesScreen extends StatefulWidget {
+  const AdminNoticesScreen({super.key});
 
   @override
-  State<DepartmentManagementScreen> createState() =>
-      _DepartmentManagementScreenState();
+  State<AdminNoticesScreen> createState() =>
+      _AdminNoticesScreenState();
 }
 
-class _DepartmentManagementScreenState
-    extends State<DepartmentManagementScreen> {
+class _AdminNoticesScreenState
+    extends State<AdminNoticesScreen> {
 
-  final List<Map<String, dynamic>> departments = [
+  final List<Map<String, dynamic>> notices = [
     {
-      "name": "Computer Science",
-      "short": "CSE",
-      "students": "520",
-      "hod": "Dr. Sharma",
-      "icon": Icons.computer,
-      "color": Colors.blue,
-    },
-    {
-      "name": "Electronics",
-      "short": "ECE",
-      "students": "410",
-      "hod": "Dr. Roy",
-      "icon": Icons.memory,
-      "color": Colors.orange,
-    },
-    {
-      "name": "Mechanical",
-      "short": "ME",
-      "students": "350",
-      "hod": "Dr. Das",
-      "icon": Icons.precision_manufacturing,
+      "title": "Semester Exam Schedule",
+      "category": "Academic",
+      "status": "Published",
+      "date": "20 May 2026",
       "color": Colors.green,
     },
     {
-      "name": "Civil",
-      "short": "CE",
-      "students": "290",
-      "hod": "Dr. Singh",
-      "icon": Icons.architecture,
-      "color": Colors.purple,
+      "title": "Campus Placement Drive",
+      "category": "Placement",
+      "status": "Draft",
+      "date": "18 May 2026",
+      "color": Colors.orange,
     },
     {
-      "name": "MBA",
-      "short": "MBA",
-      "students": "220",
-      "hod": "Dr. Gupta",
-      "icon": Icons.business_center,
+      "title": "Hostel Fee Submission",
+      "category": "Hostel",
+      "status": "Published",
+      "date": "15 May 2026",
+      "color": Colors.green,
+    },
+    {
+      "title": "Annual Tech Fest",
+      "category": "Events",
+      "status": "Expired",
+      "date": "10 May 2026",
       "color": Colors.red,
     },
   ];
@@ -71,7 +59,7 @@ class _DepartmentManagementScreenState
         ),
 
         label: const Text(
-          "Add Department",
+          "Create Notice",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -81,10 +69,10 @@ class _DepartmentManagementScreenState
       body: CustomScrollView(
         slivers: [
 
-          // PREMIUM APPBAR
+          // PREMIUM HEADER
 
           SliverAppBar(
-            expandedHeight: 240,
+            expandedHeight: 250,
             pinned: true,
             backgroundColor: Colors.blue,
 
@@ -127,7 +115,7 @@ class _DepartmentManagementScreenState
                           ),
 
                           child: const Icon(
-                            Icons.school,
+                            Icons.campaign,
                             size: 50,
                             color: Colors.blue,
                           ),
@@ -136,7 +124,7 @@ class _DepartmentManagementScreenState
                         const SizedBox(height: 15),
 
                         const Text(
-                          "Department Management",
+                          "Notice Management",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 28,
@@ -145,15 +133,12 @@ class _DepartmentManagementScreenState
                           ),
                         ),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 5),
 
                         const Text(
-                          "Manage departments and academic structures",
-                          textAlign:
-                              TextAlign.center,
+                          "Manage and monitor university notices",
                           style: TextStyle(
-                            color:
-                                Colors.white70,
+                            color: Colors.white70,
                           ),
                         ),
                       ],
@@ -179,21 +164,32 @@ class _DepartmentManagementScreenState
 
                       Expanded(
                         child: statCard(
-                          "Departments",
-                          "05",
-                          Icons.apartment,
+                          "Total",
+                          "120",
+                          Icons.description,
                           Colors.blue,
                         ),
                       ),
 
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
 
                       Expanded(
                         child: statCard(
-                          "Students",
-                          "1790",
-                          Icons.people,
+                          "Published",
+                          "95",
+                          Icons.check_circle,
                           Colors.green,
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Expanded(
+                        child: statCard(
+                          "Draft",
+                          "25",
+                          Icons.edit_note,
+                          Colors.orange,
                         ),
                       ),
                     ],
@@ -207,7 +203,7 @@ class _DepartmentManagementScreenState
                     decoration:
                         InputDecoration(
                       hintText:
-                          "Search Department...",
+                          "Search notices...",
                       prefixIcon:
                           const Icon(
                               Icons.search),
@@ -226,47 +222,46 @@ class _DepartmentManagementScreenState
                     ),
                   ),
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 15),
 
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment
-                            .spaceBetween,
+                  // FILTER CHIPS
 
-                    children: [
+                  SingleChildScrollView(
+                    scrollDirection:
+                        Axis.horizontal,
 
-                      const Text(
-                        "Departments",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
+                    child: Row(
+                      children: [
 
-                      Chip(
-                        label: Text(
-                          "${departments.length} Total",
-                        ),
-                      ),
-                    ],
+                        filterChip(
+                            "All"),
+                        filterChip(
+                            "Academic"),
+                        filterChip(
+                            "Placement"),
+                        filterChip(
+                            "Events"),
+                        filterChip(
+                            "Hostel"),
+                      ],
+                    ),
                   ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
 
-          // DEPARTMENT LIST
+          // NOTICE LIST
 
           SliverList(
             delegate:
                 SliverChildBuilderDelegate(
               (context, index) {
 
-                final dept =
-                    departments[index];
+                final notice =
+                    notices[index];
 
                 return Container(
                   margin:
@@ -288,7 +283,7 @@ class _DepartmentManagementScreenState
                     child: Padding(
                       padding:
                           const EdgeInsets.all(
-                              18),
+                              16),
 
                       child: Column(
                         children: [
@@ -297,12 +292,12 @@ class _DepartmentManagementScreenState
                             children: [
 
                               Container(
-                                height: 70,
-                                width: 70,
+                                height: 60,
+                                width: 60,
 
                                 decoration:
                                     BoxDecoration(
-                                  color: dept[
+                                  color: notice[
                                           "color"]
                                       .withOpacity(
                                           0.15),
@@ -310,14 +305,14 @@ class _DepartmentManagementScreenState
                                   borderRadius:
                                       BorderRadius
                                           .circular(
-                                              18),
+                                              15),
                                 ),
 
                                 child: Icon(
-                                  dept["icon"],
-                                  color: dept[
+                                  Icons
+                                      .description,
+                                  color: notice[
                                       "color"],
-                                  size: 35,
                                 ),
                               ),
 
@@ -333,11 +328,12 @@ class _DepartmentManagementScreenState
                                   children: [
 
                                     Text(
-                                      dept["name"],
+                                      notice[
+                                          "title"],
                                       style:
                                           const TextStyle(
                                         fontSize:
-                                            20,
+                                            18,
                                         fontWeight:
                                             FontWeight
                                                 .bold,
@@ -349,14 +345,8 @@ class _DepartmentManagementScreenState
                                             5),
 
                                     Text(
-                                      dept[
-                                          "short"],
-                                      style:
-                                          TextStyle(
-                                        color: Colors
-                                            .grey
-                                            .shade700,
-                                      ),
+                                      notice[
+                                          "category"],
                                     ),
                                   ],
                                 ),
@@ -368,7 +358,8 @@ class _DepartmentManagementScreenState
                                         const [
 
                                   PopupMenuItem(
-                                    value: "edit",
+                                    value:
+                                        "edit",
                                     child:
                                         Text(
                                       "Edit",
@@ -402,12 +393,73 @@ class _DepartmentManagementScreenState
                           Row(
                             children: [
 
+                              Chip(
+                                backgroundColor:
+                                    notice[
+                                            "color"]
+                                        .withOpacity(
+                                            0.2),
+
+                                label: Text(
+                                  notice[
+                                      "status"],
+                                  style:
+                                      TextStyle(
+                                    color: notice[
+                                        "color"],
+                                    fontWeight:
+                                        FontWeight
+                                            .bold,
+                                  ),
+                                ),
+                              ),
+
+                              const Spacer(),
+
+                              Row(
+                                children: [
+
+                                  const Icon(
+                                    Icons
+                                        .calendar_today,
+                                    size: 16,
+                                  ),
+
+                                  const SizedBox(
+                                      width:
+                                          5),
+
+                                  Text(
+                                    notice[
+                                        "date"],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(
+                              height: 15),
+
+                          Row(
+                            children: [
+
                               Expanded(
                                 child:
-                                    infoCard(
-                                  Icons.person,
-                                  "HOD",
-                                  dept["hod"],
+                                    OutlinedButton
+                                        .icon(
+                                  onPressed:
+                                      () {},
+
+                                  icon:
+                                      const Icon(
+                                    Icons.edit,
+                                  ),
+
+                                  label:
+                                      const Text(
+                                    "Edit",
+                                  ),
                                 ),
                               ),
 
@@ -416,11 +468,34 @@ class _DepartmentManagementScreenState
 
                               Expanded(
                                 child:
-                                    infoCard(
-                                  Icons.people,
-                                  "Students",
-                                  dept[
-                                      "students"],
+                                    ElevatedButton
+                                        .icon(
+                                  style:
+                                      ElevatedButton
+                                          .styleFrom(
+                                    backgroundColor:
+                                        Colors.red,
+                                  ),
+
+                                  onPressed:
+                                      () {},
+
+                                  icon:
+                                      const Icon(
+                                    Icons.delete,
+                                    color: Colors
+                                        .white,
+                                  ),
+
+                                  label:
+                                      const Text(
+                                    "Delete",
+                                    style:
+                                        TextStyle(
+                                      color: Colors
+                                          .white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -432,7 +507,7 @@ class _DepartmentManagementScreenState
                 );
               },
               childCount:
-                  departments.length,
+                  notices.length,
             ),
           ),
 
@@ -460,7 +535,7 @@ class _DepartmentManagementScreenState
       ),
 
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(12),
 
         child: Column(
           children: [
@@ -468,70 +543,38 @@ class _DepartmentManagementScreenState
             Icon(
               icon,
               color: color,
-              size: 35,
+              size: 30,
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
 
             Text(
               value,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight:
                     FontWeight.bold,
               ),
             ),
 
-            const SizedBox(height: 5),
-
-            Text(title),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget infoCard(
-    IconData icon,
-    String title,
-    String value,
-  ) {
+  Widget filterChip(String label) {
     return Container(
-      padding:
-          const EdgeInsets.all(12),
+      margin:
+          const EdgeInsets.only(right: 10),
 
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius:
-            BorderRadius.circular(15),
-      ),
-
-      child: Column(
-        children: [
-
-          Icon(icon, color: Colors.blue),
-
-          const SizedBox(height: 5),
-
-          Text(
-            title,
-            style: TextStyle(
-              color:
-                  Colors.grey.shade600,
-            ),
-          ),
-
-          const SizedBox(height: 5),
-
-          Text(
-            value,
-            style: const TextStyle(
-              fontWeight:
-                  FontWeight.bold,
-            ),
-          ),
-        ],
+      child: Chip(
+        label: Text(label),
       ),
     );
   }
-}
+} 

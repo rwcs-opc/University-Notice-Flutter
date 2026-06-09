@@ -119,6 +119,7 @@ import 'register_screen.dart';
 import 'bottom_nav_screen.dart';
 import '../admin/admin_dashboard.dart';
 import '../superadmin/superadmindashboard.dart';
+import '../admin/admin_bottom_nav.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -241,8 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                const AdminDashboard(),
+                            builder: (context) => const AdminBottomNav(),
                           ),
                         );
                       }
