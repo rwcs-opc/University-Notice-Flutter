@@ -37,8 +37,7 @@ class NotificationScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-
+     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const Text(

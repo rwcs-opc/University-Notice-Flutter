@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       
       appBar: AppBar(
@@ -201,15 +201,16 @@ class HomePage extends StatelessWidget {
             ),
 
            
-            const Padding(
+             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                "Categories",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+  "Categories",
+  style: TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Theme.of(context).colorScheme.onBackground,
+  ),
+)
             ),
 
             const SizedBox(height: 10),
