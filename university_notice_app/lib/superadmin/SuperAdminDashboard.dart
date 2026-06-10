@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+
+import 'admin_management.dart';
+import 'activity_logs.dart';
+import 'backup_restore.dart';
+import 'permissions_management.dart';
+import 'role_management.dart';
+import 'system_analytics.dart';
+import 'system_settings.dart';
+
 class SuperAdminDashboard extends StatelessWidget {
   const SuperAdminDashboard({super.key});
 
@@ -41,6 +50,7 @@ class SuperAdminDashboard extends StatelessWidget {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
+                    
                   ),
                   Text(
                     "System Control Center",
@@ -57,10 +67,18 @@ class SuperAdminDashboard extends StatelessWidget {
               title: Text("Dashboard"),
             ),
 
-            const ListTile(
-              leading: Icon(Icons.people),
-              title: Text("Manage Admins"),
-            ),
+            ListTile(
+  leading: const Icon(Icons.people),
+  title: const Text("Manage Admins"),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const AdminManagementScreen(),
+      ),
+    );
+  },
+),
 
             const ListTile(
               leading: Icon(Icons.security),
@@ -169,36 +187,68 @@ class SuperAdminDashboard extends StatelessWidget {
                 mainAxisSpacing: 12,
                 childAspectRatio: 1.3,
 
-                children: const [
+                children: [
 
-                  DashboardStatCard(
-                    title: "Users",
-                    value: "1250",
-                    icon: Icons.people,
-                    color: Colors.green,
-                  ),
+  DashboardStatCard(
+    title: "Users",
+    value: "1250",
+    icon: Icons.people,
+    color: Colors.green,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AdminManagementScreen(),
+        ),
+      );
+    },
+  ),
 
-                  DashboardStatCard(
-                    title: "Admins",
-                    value: "18",
-                    icon: Icons.admin_panel_settings,
-                    color: Colors.orange,
-                  ),
+  DashboardStatCard(
+    title: "Admins",
+    value: "18",
+    icon: Icons.admin_panel_settings,
+    color: Colors.orange,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AdminManagementScreen(),
+        ),
+      );
+    },
+  ),
 
-                  DashboardStatCard(
-                    title: "Notices",
-                    value: "320",
-                    icon: Icons.description,
-                    color: Colors.blue,
-                  ),
+  DashboardStatCard(
+    title: "Notices",
+    value: "320",
+    icon: Icons.description,
+    color: Colors.blue,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const ActivityLogsScreen(),
+        ),
+      );
+    },
+  ),
 
-                  DashboardStatCard(
-                    title: "Departments",
-                    value: "12",
-                    icon: Icons.school,
-                    color: Colors.purple,
-                  ),
-                ],
+  DashboardStatCard(
+    title: "Departments",
+    value: "12",
+    icon: Icons.school,
+    color: Colors.purple,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const RoleManagementScreen(),
+        ),
+      );
+    },
+  ),
+]
               ),
             ),
 
@@ -230,32 +280,64 @@ class SuperAdminDashboard extends StatelessWidget {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
 
-                children: const [
+               children: [
 
-                  ActionCard(
-                    title: "Manage Admins",
-                    icon: Icons.people,
-                    color: Colors.blue,
-                  ),
+  ActionCard(
+    title: "Manage Admins",
+    icon: Icons.people,
+    color: Colors.blue,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AdminManagementScreen(),
+        ),
+      );
+    },
+  ),
 
-                  ActionCard(
-                    title: "Permissions",
-                    icon: Icons.security,
-                    color: Colors.red,
-                  ),
+  ActionCard(
+    title: "Permissions",
+    icon: Icons.security,
+    color: Colors.red,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const PermissionsManagementScreen(),
+        ),
+      );
+    },
+  ),
 
-                  ActionCard(
-                    title: "Analytics",
-                    icon: Icons.analytics,
-                    color: Colors.green,
-                  ),
+  ActionCard(
+    title: "Analytics",
+    icon: Icons.analytics,
+    color: Colors.green,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SystemAnalyticsScreen(),
+        ),
+      );
+    },
+  ),
 
-                  ActionCard(
-                    title: "System Settings",
-                    icon: Icons.settings,
-                    color: Colors.orange,
-                  ),
-                ],
+  ActionCard(
+    title: "System Settings",
+    icon: Icons.settings,
+    color: Colors.orange,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SystemSettingsScreen(),
+        ),
+      );
+    },
+  ),
+]
               ),
             ),
 
@@ -380,13 +462,12 @@ class SuperAdminDashboard extends StatelessWidget {
       ),
     );
   }
-}
-
-class DashboardStatCard extends StatelessWidget {
+}class DashboardStatCard extends StatelessWidget {
   final String title;
   final String value;
   final IconData icon;
   final Color color;
+  final VoidCallback onTap;
 
   const DashboardStatCard({
     super.key,
@@ -394,85 +475,76 @@ class DashboardStatCard extends StatelessWidget {
     required this.value,
     required this.icon,
     required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-
-          Icon(
-            icon,
-            color: color,
-            size: 35,
-          ),
-
-          const SizedBox(height: 10),
-
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 35),
+            const SizedBox(height: 10),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-
-          Text(title),
-        ],
+            Text(title),
+          ],
+        ),
       ),
     );
   }
 }
-
 class ActionCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color color;
+  final VoidCallback onTap;
 
   const ActionCard({
     super.key,
     required this.title,
     required this.icon,
     required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-
-          Icon(
-            icon,
-            color: color,
-            size: 40,
-          ),
-
-          const SizedBox(height: 10),
-
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 40),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
