@@ -1,119 +1,8 @@
-// import 'package:flutter/material.dart';
-// import 'register_screen.dart';
-// import 'package:university_notice_app/Home/home.dart';
-// import 'bottom_nav_screen.dart';
-
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-      
-//       body: Center(
-//         child: Padding(
-//           padding: const EdgeInsets.all(20),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               const Text("login",
-//               style: TextStyle(
-//                 fontSize: 28,
-//                 fontWeight: FontWeight.bold,
-//               ),),
-//               TextField(
-//                 decoration: InputDecoration(
-//                   labelText: "Email",
-//                   border: OutlineInputBorder(),
-//                 ),
-//               ),
-//               SizedBox(height: 20),
-//               TextField(
-//                 obscureText: true,
-//                 decoration: InputDecoration(
-//                   labelText: "Password",
-//                   border: OutlineInputBorder(),
-//                 ),
-//               ),
-
-
-//               //foget ppassword
-//               Align(
-//   alignment: Alignment.centerRight,
-//   child: TextButton(
-//     onPressed: () {
-//       // Navigate to forgot password screen
-//     },
-//     child: const Text("Forgot Password?"),
-//   ),
-// ),
-
-
-//               // SizedBox(height: 30),
-//               // ElevatedButton(
-//               //   onPressed: () {},
-//               //   child: Text("Login"),
-//               // ),
-
-//               SizedBox(height: 30),
-
-// ElevatedButton(
-//   onPressed: () {
-
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//         builder: (context) => const BottomNavScreen(),
-//       ),
-//     );
-
-//   },
-
-//   child: const Text("Login"),
-// ),
-//               //sing up now
-//               Row(
-//   mainAxisAlignment: MainAxisAlignment.center,
-//   children: [
-//     const Text("Don't have an account?"),
-//     TextButton(
-//       onPressed: () {
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => const RegisterScreen()),
-//         );
-//         // Navigate to sign up screen
-//       },
-//       child: const Text("Sign Up"),
-//     ),
-//   ],
-// ),
-
-
-//             ],
-            
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
 
 //temporarly
 
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
 import 'register_screen.dart';
 import 'bottom_nav_screen.dart';
@@ -136,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController passwordController =
       TextEditingController();
+      final ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -213,68 +103,160 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 50,
 
                   child: ElevatedButton(
-                    onPressed: () {
+                    /////
+                    ///
+                    ///
+                    ///
+        
 
-                      String email =
-                          emailController.text.trim();
 
-                      String password =
-                          passwordController.text.trim();
 
-                      // USER LOGIN
 
-                      if (email == "user" &&
-                          password == "123") {
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                const BottomNavScreen(),
-                          ),
-                        );
-                      }
 
-                      // ADMIN LOGIN
+                    // onPressed: () {
 
-                      else if (email == "admin" &&
-                          password == "123") {
+                    //   String email =
+                    //       emailController.text.trim();
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AdminBottomNav(),
-                          ),
-                        );
-                      }
+                    //   String password =
+                    //       passwordController.text.trim();
 
-                      // SUPER ADMIN LOGIN
+                    //   // USER LOGIN
 
-                      else if (email == "sadmin" &&
-                          password == "123") {
+                    //   if (email == "user" &&
+                    //       password == "123") {
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                           builder: (context) => const SuperAdminNav(),
-                          ),
-                        );
-                      }
+                    //     Navigator.pushReplacement(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) =>
+                    //             const BottomNavScreen(),
+                    //       ),
+                    //     );
+                    //   }
 
-                      // INVALID LOGIN
+                    //   // ADMIN LOGIN
 
-                      else {
+                    //   else if (email == "admin" &&
+                    //       password == "123") {
 
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Invalid Credentials",
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                    //     Navigator.pushReplacement(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => const AdminBottomNav(),
+                    //       ),
+                    //     );
+                    //   }
+
+                    //   // SUPER ADMIN LOGIN
+
+                    //   else if (email == "sadmin" &&
+                    //       password == "123") {
+
+                    //     Navigator.pushReplacement(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //        builder: (context) => const SuperAdminNav(),
+                    //       ),
+                    //     );
+                    //   }
+
+                    //   // INVALID LOGIN
+
+                    //   else {
+
+                    //     ScaffoldMessenger.of(context)
+                    //         .showSnackBar(
+                    //       const SnackBar(
+                    //         content: Text(
+                    //           "Invalid Credentials",
+                    //         ),
+                    //       ),
+                    //     );
+                    //   }
+                    // },
+
+onPressed: () async {
+
+  String email = emailController.text.trim();
+  String password = passwordController.text.trim();
+
+  final result = await apiService.login(
+    email,
+    password,
+  );
+
+  if (result["status"] == true) {
+
+    String role = result["user"]["role"];
+
+    if (role == "user") {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const BottomNavScreen(),
+        ),
+      );
+
+    } else if (role == "admin") {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AdminBottomNav(),
+        ),
+      );
+
+    } else if (role == "super_admin") {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SuperAdminNav(),
+        ),
+      );
+
+    }
+
+  } else {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result["message"]),
+      ),
+    );
+
+  }
+
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //
+                    //
 
                     child: const Text(
                       "Login",

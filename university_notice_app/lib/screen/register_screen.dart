@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,7 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
+ final ApiService apiService = ApiService();
   @override
   void dispose() {
     _nameController.dispose();
@@ -26,15 +27,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // If the form is valid, proceed with registration logic
-      print("Registering: ${_emailController.text}");
+  // void _submitForm() {
+  //   if (_formKey.currentState!.validate()) {
+  //     // If the form is valid, proceed with registration logic
+  //     print("Registering: ${_emailController.text}");
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Processing Registration...')),
+  //     );
+  //   }
+  // }
+
+  void _submitForm() async {
+
+  if (_formKey.currentState!.validate()) {
+
+    final result = await apiService.register(
+      _nameController.text.trim(),
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+      _confirmPasswordController.text.trim(),
+    );
+
+    if (result["status"] == true) {
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Registration...')),
+        const SnackBar(
+          content: Text("Registration Successful"),
+        ),
       );
-    }
+
+      Navigator.pop(context);
+
+    } else {
+
+  String message = result["message"];
+
+  if (result["errors"] != null) {
+    message = result["errors"].values.first.first;
   }
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
+
+}
+
+  }
+
+}
 
   @override
   Widget build(BuildContext context) {
