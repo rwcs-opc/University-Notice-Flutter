@@ -49,6 +49,30 @@ class ApiService {
       throw Exception("Failed to load notices");
     }
   }
+  Future<List<NoticeModel>> getCategoryNotices(String category) async {
+  final response = await http.get(
+    Uri.parse("$baseUrl/notices"),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+
+    List notices = data["notices"];
+
+    notices = notices.where((notice) {
+      return notice["category"]["category_name"]
+              .toString()
+              .toLowerCase() ==
+          category.toLowerCase();
+    }).toList();
+
+    return notices
+        .map((notice) => NoticeModel.fromJson(notice))
+        .toList();
+  } else {
+    throw Exception("Failed to load notices");
+  }
+}
 
   Future<Map<String, dynamic>> createNotice({
     required String title,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import '../models/notice_model.dart';
+import '../services/api_service.dart';
+import '../Home/notice_detail_screen.dart';
 
-class CategoryNoticesScreen extends StatelessWidget {
+class CategoryNoticesScreen extends StatefulWidget {
   final String categoryName;
 
   const CategoryNoticesScreen({
@@ -9,6 +12,41 @@ class CategoryNoticesScreen extends StatelessWidget {
   });
 
   @override
+  State<CategoryNoticesScreen> createState() => _CategoryNoticesScreenState();
+}
+
+class _CategoryNoticesScreenState extends State<CategoryNoticesScreen> {
+  final ApiService apiService = ApiService();
+
+List<NoticeModel> notices = [];
+
+bool isLoading = true;
+@override
+void initState() {
+  super.initState();
+  loadCategoryNotices();
+}
+
+Future<void> loadCategoryNotices() async {
+  try {
+    final data = await apiService.getCategoryNotices(
+      widget.categoryName,
+    );
+
+    setState(() {
+      notices = data;
+      isLoading = false;
+    });
+
+  } catch (e) {
+    setState(() {
+      isLoading = false;
+    });
+
+    print(e);
+  }
+}
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -16,7 +54,7 @@ class CategoryNoticesScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          categoryName,
+          widget.categoryName,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -45,7 +83,7 @@ class CategoryNoticesScreen extends StatelessWidget {
               children: [
 
                 Text(
-                  "$categoryName Notices",
+                  "${widget.categoryName} Notices",
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 26,
@@ -67,95 +105,224 @@ class CategoryNoticesScreen extends StatelessWidget {
 
           const SizedBox(height: 15),
 
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: 5,
 
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+          //     itemBuilder: (context, index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.symmetric(
+          //           horizontal: 16,
+          //           vertical: 8,
+          //         ),
+
+          //         child: Card(
+          //           elevation: 2,
+
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(20),
+          //           ),
+
+          //           child: Padding(
+          //             padding: const EdgeInsets.all(18),
+
+          //             child: Column(
+          //               crossAxisAlignment:
+          //                   CrossAxisAlignment.start,
+
+          //               children: [
+
+          //                 Container(
+          //                   padding:
+          //                       const EdgeInsets.symmetric(
+          //                     horizontal: 12,
+          //                     vertical: 5,
+          //                   ),
+
+          //                   decoration: BoxDecoration(
+          //                     color: Colors.red,
+          //                     borderRadius:
+          //                         BorderRadius.circular(20),
+          //                   ),
+
+          //                   child: const Text(
+          //                     "NEW",
+          //                     style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontWeight: FontWeight.bold,
+          //                     ),
+          //                   ),
+          //                 ),
+
+          //                 const SizedBox(height: 12),
+
+          //                 Text(
+          //                   "${widget.categoryName} Notice ${index + 1}",
+          //                   style: const TextStyle(
+          //                     fontSize: 20,
+          //                     fontWeight: FontWeight.bold,
+          //                   ),
+          //                 ),
+
+          //                 const SizedBox(height: 10),
+
+          //                 const Text(
+          //                   "This is a sample university notice related to this category.",
+          //                   style: TextStyle(
+          //                     color: Colors.black54,
+          //                   ),
+          //                 ),
+
+          //                 const SizedBox(height: 15),
+
+          //                 Row(
+          //                   children: const [
+          //                     Icon(
+          //                       Icons.calendar_month,
+          //                       size: 18,
+          //                       color: Colors.grey,
+          //                     ),
+          //                     SizedBox(width: 8),
+          //                     Text("20 May 2026"),
+          //                   ],
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
+          Expanded(
+  child: isLoading
+      ? const Center(
+          child: CircularProgressIndicator(),
+        )
+      : ListView.builder(
+          itemCount: notices.length,
+          itemBuilder: (context, index) {
+
+            final notice = notices[index];
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => NoticeDetailScreen(
+                        title: notice.title,
+                        description: notice.description,
+                        priority: notice.priority,
+                        publishDate: notice.date,
+                      ),
+                    ),
+                  );
+                },
+
+                child: Card(
+                  elevation: 3,
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(20),
                   ),
 
-                  child: Card(
-                    elevation: 2,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(18),
 
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
 
-                    child: Padding(
-                      padding: const EdgeInsets.all(18),
+                      children: [
 
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
-                        children: [
-
+                        if (notice.urgent)
                           Container(
                             padding:
                                 const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 5,
                             ),
-
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius:
                                   BorderRadius.circular(20),
                             ),
-
                             child: const Text(
-                              "NEW",
+                              "URGENT",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontWeight:
+                                    FontWeight.bold,
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: 12),
+                        const SizedBox(height: 10),
 
-                          Text(
-                            "$categoryName Notice ${index + 1}",
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                        Text(
+                          notice.title,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight:
+                                FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        Text(notice.description),
+
+                        const SizedBox(height: 15),
+
+                        Row(
+                          children: [
+
+                            const Icon(
+                              Icons.account_balance,
+                              size: 18,
                             ),
-                          ),
 
-                          const SizedBox(height: 10),
+                            const SizedBox(width: 8),
 
-                          const Text(
-                            "This is a sample university notice related to this category.",
-                            style: TextStyle(
-                              color: Colors.black54,
+                            Text(notice.department),
+
+                          ],
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        Row(
+                          children: [
+
+                            const Icon(
+                              Icons.calendar_month,
+                              size: 18,
                             ),
-                          ),
 
-                          const SizedBox(height: 15),
+                            const SizedBox(width: 8),
 
-                          Row(
-                            children: const [
-                              Icon(
-                                Icons.calendar_month,
-                                size: 18,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(width: 8),
-                              Text("20 May 2026"),
-                            ],
-                          ),
-                        ],
-                      ),
+                            Text(notice.date),
+
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
+                ),
+              ),
+            );
+          },
+        ),
+),
         ],
       ),
     );

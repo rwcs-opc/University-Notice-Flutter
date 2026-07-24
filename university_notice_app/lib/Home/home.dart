@@ -46,7 +46,7 @@ bool isLoading = true;
       "color": Colors.blue,
     },
     {
-      "title": "Exams",
+      "title": "Examination",
       "icon": Icons.description,
       "color": Colors.red,
     },
