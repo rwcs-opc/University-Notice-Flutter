@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   final ApiService apiService = ApiService();
 
 List<NoticeModel> notices = [];
+List<NoticeModel> filteredNotices = [];
 
 bool isLoading = true;
   final List<Map<String, dynamic>> categories = const [
@@ -95,6 +96,7 @@ Future<void> loadNotices() async {
 
     setState(() {
       notices = data;
+      filteredNotices = data;
       isLoading = false;
     });
 
@@ -106,6 +108,29 @@ Future<void> loadNotices() async {
       isLoading = false;
     });
   }
+}
+
+void searchNotice(String query) {
+  setState(() {
+    if (query.isEmpty) {
+      filteredNotices = notices;
+    } else {
+      filteredNotices = notices.where((notice) {
+        return notice.title
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            notice.description
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            notice.category
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            notice.department
+                .toLowerCase()
+                .contains(query.toLowerCase());
+      }).toList();
+    }
+  });
 }
 
   @override
@@ -214,6 +239,7 @@ Future<void> loadNotices() async {
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
+                onChanged: searchNotice,
                 decoration: InputDecoration(
                   hintText: "Search notices...",
                   prefixIcon: const Icon(Icons.search),
@@ -331,10 +357,10 @@ Future<void> loadNotices() async {
     : ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: notices.length,
+              itemCount: filteredNotices.length,
               itemBuilder: (context, index) {
 
-                final notice = notices[index];
+               final notice = filteredNotices[index];
 
                 return Padding(
   padding: const EdgeInsets.symmetric(
