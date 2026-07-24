@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import '../models/notice_model.dart';
+import '../services/api_service.dart';
 
 class EditNoticeScreen extends StatefulWidget {
-  const EditNoticeScreen({super.key});
+  final NoticeModel notice;
+
+  const EditNoticeScreen({
+    super.key,
+    required this.notice,
+  });
 
   @override
   State<EditNoticeScreen> createState() =>
@@ -12,16 +19,10 @@ class _EditNoticeScreenState
     extends State<EditNoticeScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController titleController =
-      TextEditingController(
-    text: "Semester Examination Schedule",
-  );
+ late TextEditingController titleController;
+late TextEditingController descriptionController;
 
-  final TextEditingController descriptionController =
-      TextEditingController(
-    text:
-        "The semester examination schedule has been released for all departments. Students are advised to check the timetable carefully.",
-  );
+final ApiService apiService = ApiService();
 
   String selectedCategory = "Academic";
   String selectedDepartment = "CSE";
@@ -535,8 +536,50 @@ class _EditNoticeScreenState
                                       .blue,
                             ),
 
-                            onPressed:
-                                () {},
+                            // onPressed:
+                            //     () {},
+                            onPressed: () async {
+
+  final response = await apiService.updateNotice(
+
+    id: widget.notice.id,
+
+    title: titleController.text,
+
+    description: descriptionController.text,
+
+    departmentId: 2,
+
+    categoryId: 2,
+
+    priority: selectedPriority,
+
+    publishDate: widget.notice.date,
+
+    createdBy: 1,
+  );
+
+  if (response["status"] == true) {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Notice Updated Successfully"),
+      ),
+    );
+
+    Navigator.pop(context);
+
+  } else {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.toString()),
+      ),
+    );
+
+  }
+
+},
 
                             icon:
                                 const Icon(

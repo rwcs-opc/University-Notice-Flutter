@@ -70,4 +70,65 @@ Future<List<NoticeModel>> getNotices() async {
   }
 
 }
+Future<Map<String, dynamic>> createNotice({
+  required String title,
+  required String description,
+  required int departmentId,
+  required int categoryId,
+  required String priority,
+  required String publishDate,
+  String? expiryDate,
+}) 
+    
+
+  async {
+    
+  final response = await http.post(
+    Uri.parse("$baseUrl/notices"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "title": title,
+      "description": description,
+      "department_id": departmentId,
+      "category_id": categoryId,
+      "priority": priority,
+      "publish_date": publishDate,
+      "expiry_date": expiryDate,
+      "created_by": 1,
+    }),
+  );
+
+  return jsonDecode(response.body);
+}
+Future<Map<String, dynamic>> updateNotice({
+  required int id,
+  required String title,
+  required String description,
+  required int departmentId,
+  required int categoryId,
+  required String priority,
+  required String publishDate,
+  required int createdBy,
+}) async {
+
+  final response = await http.put(
+    Uri.parse("$baseUrl/notices/$id"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "title": title,
+      "description": description,
+      "department_id": departmentId,
+      "category_id": categoryId,
+      "priority": priority,
+      "publish_date": publishDate,
+      "created_by": createdBy,
+    }),
+  );
+
+  return jsonDecode(response.body);
+}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
 class CreateNoticeScreen extends StatefulWidget {
   const CreateNoticeScreen({super.key});
@@ -6,6 +7,7 @@ class CreateNoticeScreen extends StatefulWidget {
   @override
   State<CreateNoticeScreen> createState() =>
       _CreateNoticeScreenState();
+      
 }
 
 class _CreateNoticeScreenState
@@ -14,6 +16,7 @@ class _CreateNoticeScreenState
   final titleController = TextEditingController();
   final descriptionController =
       TextEditingController();
+      final ApiService apiService = ApiService();
 
   String selectedCategory = "Academic";
   String selectedDepartment = "CSE";
@@ -366,26 +369,86 @@ class _CreateNoticeScreenState
 
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+  onPressed: () async {
 
-                    style:
-                        ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.blue,
-                      minimumSize:
-                          const Size(
-                              double.infinity,
-                              55),
-                    ),
+    if (publishDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please select Publish Date"),
+        ),
+      );
+      return;
+    }
 
-                    child: const Text(
-                      "Publish",
-                      style: TextStyle(
-                        color:
-                            Colors.white,
-                      ),
-                    ),
-                  ),
+    try {
+
+      final response = await apiService.createNotice(
+
+        title: titleController.text,
+
+        description: descriptionController.text,
+
+        departmentId: 2,
+
+        categoryId: 2,
+
+        priority: selectedPriority,
+
+        publishDate:
+            "${publishDate!.year}-${publishDate!.month.toString().padLeft(2, '0')}-${publishDate!.day.toString().padLeft(2, '0')}",
+
+        expiryDate: expiryDate == null
+            ? null
+            : "${expiryDate!.year}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
+      );
+
+      if (response["status"] == true) {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+          const SnackBar(
+            content: Text("Notice Published Successfully"),
+          ),
+
+        );
+
+        //Navigator.pop(context);
+
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+            content: Text(response.toString()),
+          ),
+
+        );
+      }
+
+    } catch (e) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+
+      );
+
+    }
+
+  },
+
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue,
+    minimumSize: const Size(double.infinity, 55),
+  ),
+
+  child: const Text(
+    "Publish",
+    style: TextStyle(color: Colors.white),
+  ),
+),
                 ),
               ],
             ),
