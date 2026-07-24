@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'notification_screen.dart';
-import 'saved_screen.dart';
+//import 'saved_screen.dart';
 import 'edit_profile_screen.dart';
 import '../screen/change_password_screen.dart';
 import '../screen/setting_screen.dart';
@@ -179,19 +179,19 @@ class ProfileScreen extends StatelessWidget {
   },
 ),
 
-                  profileTile(
-  Icons.bookmark,
-  "Saved Notices",
-  Colors.green,
-  () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SavedScreen(),
-      ),
-    );
-  },
-),
+//                   profileTile(
+//   Icons.bookmark,
+//   "Saved Notices",
+//   Colors.green,
+//   () {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => const SavedScreen(),
+//       ),
+//     );
+//   },
+// ),
 
                   profileTile(
   Icons.lock,

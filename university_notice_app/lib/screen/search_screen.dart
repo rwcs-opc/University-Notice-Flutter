@@ -279,23 +279,16 @@ class _SearchScreenState extends State<SearchScreen> {
                           onTap: () {
 
   Navigator.push(
-
-    context,
-
-    MaterialPageRoute(
-
-      builder: (context) => NoticeDetailScreen(
-
-        title: notice["title"],
-        category: notice["category"],
-        department: notice["department"],
-        date: notice["date"],
-        views: notice["views"],
-        urgent: notice["urgent"],
-
-      ),
-    ),
-  );
+  context,
+  MaterialPageRoute(
+    builder: (context) => NoticeDetailScreen(
+  title: notice["title"],
+  description: notice["description"],
+  priority: notice["priority"],
+  publishDate: notice["publishDate"],
+),
+),
+);
 },
 
                           child: Card(

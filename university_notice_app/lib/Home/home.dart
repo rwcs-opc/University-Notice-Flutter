@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'notice_detail_screen.dart';
 import '../screen/notification_screen.dart';
 import '../screen/category_notices_screen.dart';
+import '../services/api_service.dart';
+import '../models/notice_model.dart';
 void main() {
   runApp(const UniversityNoticeApp());
 }
@@ -23,9 +25,19 @@ class UniversityNoticeApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ApiService apiService = ApiService();
+
+List<NoticeModel> notices = [];
+
+bool isLoading = true;
   final List<Map<String, dynamic>> categories = const [
     {
       "title": "Academic",
@@ -54,32 +66,47 @@ class HomePage extends StatelessWidget {
     },
   ];
 
-  final List<Map<String, dynamic>> notices = const [
-    {
-      "title": "Semester Exam Schedule Released",
-      "department": "CSE Department",
-      "category": "Examination",
-      "date": "20 May 2026",
-      "urgent": true,
-      "views": 120,
-    },
-    {
-      "title": "Campus Placement Drive",
-      "department": "Training & Placement",
-      "category": "Placement",
-      "date": "18 May 2026",
-      "urgent": false,
-      "views": 89,
-    },
-    {
-      "title": "Hostel Fee Submission Notice",
-      "department": "Hostel Department",
-      "category": "Hostel",
-      "date": "15 May 2026",
-      "urgent": true,
-      "views": 200,
-    },
-  ];
+// List<NoticeModel> notices = [];
+@override
+void initState() {
+  super.initState();
+  loadNotices();
+}
+
+// Future<void> loadNotices() async {
+//   try {
+//     final data = await apiService.getNotices();
+
+//     setState(() {
+//       notices = data;
+//       isLoading = false;
+//     });
+//   } catch (e) {
+//     setState(() {
+//       isLoading = false;
+//     });
+
+//     print(e);
+//   }
+// }
+Future<void> loadNotices() async {
+  try {
+    final data = await apiService.getNotices();
+
+    setState(() {
+      notices = data;
+      isLoading = false;
+    });
+
+    print("Loaded ${notices.length} notices");
+  } catch (e) {
+    print(e);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +323,12 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            ListView.builder(
+            // ListView.builder(
+            isLoading
+    ? const Center(
+        child: CircularProgressIndicator(),
+      )
+    : ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: notices.length,
@@ -321,15 +353,11 @@ class HomePage extends StatelessWidget {
         MaterialPageRoute(
 
           builder: (context) => NoticeDetailScreen(
-
-            title: notice["title"],
-            category: notice["category"],
-            department: notice["department"],
-            date: notice["date"],
-            views: notice["views"],
-            urgent: notice["urgent"],
-
-          ),
+  title: notice.title,
+  description: notice.description,
+  priority: notice.priority,
+  publishDate: notice.date,
+)
         ),
       );
 
@@ -354,7 +382,7 @@ class HomePage extends StatelessWidget {
           children: [
 
             // URGENT BADGE
-            if (notice["urgent"] == true)
+            if (notice.urgent)
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -379,7 +407,7 @@ class HomePage extends StatelessWidget {
 
             // TITLE
             Text(
-              notice["title"],
+              notice.title,
 
               style: const TextStyle(
                 fontSize: 19,
@@ -401,7 +429,7 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(width: 6),
 
-                Text(notice["department"]),
+                Text(notice.department),
               ],
             ),
 
@@ -409,19 +437,16 @@ class HomePage extends StatelessWidget {
 
             // CATEGORY
             Row(
-              children: [
-
-                const Icon(
-                  Icons.category,
-                  size: 18,
-                  color: Colors.grey,
-                ),
-
-                const SizedBox(width: 6),
-
-                Text(notice["category"]),
-              ],
-            ),
+  children: [
+    const Icon(
+      Icons.category,
+      size: 18,
+      color: Colors.grey,
+    ),
+    const SizedBox(width: 6),
+    Text(notice.category),
+  ],
+),
 
             const SizedBox(height: 8),
 
@@ -437,7 +462,7 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(width: 6),
 
-                Text(notice["date"]),
+                Text(notice.date),
               ],
             ),
 
@@ -473,7 +498,7 @@ class HomePage extends StatelessWidget {
                     const SizedBox(width: 5),
 
                     Text(
-                      notice["views"].toString(),
+                     notice.views.toString(),
                     ),
                   ],
                 ),

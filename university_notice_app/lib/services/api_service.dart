@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/notice_model.dart';
 
 class ApiService {
   static const String baseUrl = "http://10.62.216.106:8000/api";
@@ -45,5 +46,28 @@ class ApiService {
   );
 
   return jsonDecode(response.body);
+}
+Future<List<NoticeModel>> getNotices() async {
+
+  final response = await http.get(
+    Uri.parse("$baseUrl/notices"),
+  );
+
+  if (response.statusCode == 200) {
+
+    final data = jsonDecode(response.body);
+
+    List notices = data["notices"];
+
+    return notices
+        .map((notice) => NoticeModel.fromJson(notice))
+        .toList();
+
+  } else {
+
+    throw Exception("Failed to load notices");
+
+  }
+
 }
 }

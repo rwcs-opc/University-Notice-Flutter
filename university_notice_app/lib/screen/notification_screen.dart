@@ -141,19 +141,16 @@ class NotificationScreen extends StatelessWidget {
                        onTap: () {
 
     Navigator.push(
-      context,
-
-      MaterialPageRoute(
-        builder: (context) => NoticeDetailScreen(
-          title: notification["title"],
-          category: "Notification",
-          department: "University",
-          date: notification["time"],
-          views: 0,
-          urgent: notification["isNew"],
-        ),
-      ),
-    );
+  context,
+  MaterialPageRoute(
+    builder: (context) => NoticeDetailScreen(
+      title: notification["title"],
+      description: notification["message"],
+      priority: notification["isNew"] ? "High" : "Normal",
+      publishDate: notification["time"],
+    ),
+  ),
+);
   },
 
 

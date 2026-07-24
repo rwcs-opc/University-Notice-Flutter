@@ -2,22 +2,18 @@ import 'package:flutter/material.dart';
 
 class NoticeDetailScreen extends StatelessWidget {
 
-  final String title;
-  final String category;
-  final String department;
-  final String date;
-  final int views;
-  final bool urgent;
+ final String title;
+final String description;
+final String priority;
+final String publishDate;
 
   const NoticeDetailScreen({
-    super.key,
-    required this.title,
-    required this.category,
-    required this.department,
-    required this.date,
-    required this.views,
-    required this.urgent,
-  });
+  super.key,
+  required this.title,
+  required this.description,
+  required this.priority,
+  required this.publishDate,
+});
   @override
   Widget build(BuildContext context) {
 
@@ -61,7 +57,7 @@ class NoticeDetailScreen extends StatelessWidget {
             const SizedBox(height: 10),
 
             // URGENT BADGE
-            if (urgent == true)
+            if (priority.toLowerCase() == "high")
               Container(
 
                 padding: const EdgeInsets.symmetric(
@@ -113,7 +109,7 @@ class NoticeDetailScreen extends StatelessWidget {
                 const SizedBox(width: 6),
 
                 Text(
-                  date,
+                  publishDate,
                   style: const TextStyle(
                     color: Colors.white70,
                   ),
@@ -121,20 +117,7 @@ class NoticeDetailScreen extends StatelessWidget {
 
                 const SizedBox(width: 20),
 
-                const Icon(
-                  Icons.visibility,
-                  color: Colors.white70,
-                ),
-
-                const SizedBox(width: 6),
-
-                Text(
-                  "$views Views",
-
-                  style: const TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
+                
               ],
             ),
           ],
@@ -164,47 +147,7 @@ class NoticeDetailScreen extends StatelessWidget {
 
               children: [
 
-                Row(
-                  children: [
-
-                    const CircleAvatar(
-                      backgroundColor: Colors.blue,
-
-                      child: Icon(
-                        Icons.account_balance,
-                        color: Colors.white,
-                      ),
-                    ),
-
-                    const SizedBox(width: 15),
-
-                    Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-
-                      children: [
-
-                        const Text(
-                          "Department",
-
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-
-                        Text(
-
-                          department,
-
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+               
 
                 const SizedBox(height: 20),
 
@@ -238,7 +181,7 @@ class NoticeDetailScreen extends StatelessWidget {
 
                         Text(
 
-                          category,
+                          priority,
 
                           style: const TextStyle(
                             fontSize: 18,
@@ -280,15 +223,10 @@ class NoticeDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            const Text(
+             Text(
+               description,
 
-              "This is the complete notice description. "
-              "Here admin can provide detailed information "
-              "regarding exams, scholarship updates, "
-              "placement drives, hostel circulars, "
-              "academic notices, and important announcements.",
-
-              style: TextStyle(
+              style:const TextStyle(
                 fontSize: 17,
                 height: 1.7,
                 color: Colors.black87,
