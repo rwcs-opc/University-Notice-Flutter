@@ -17,16 +17,47 @@ class EditNoticeScreen extends StatefulWidget {
 
 class _EditNoticeScreenState
     extends State<EditNoticeScreen> {
+      final ApiService apiService = ApiService();
   final _formKey = GlobalKey<FormState>();
 
  late TextEditingController titleController;
 late TextEditingController descriptionController;
 
-final ApiService apiService = ApiService();
+//final ApiService apiService = ApiService();
 
   String selectedCategory = "Academic";
   String selectedDepartment = "CSE";
   String selectedPriority = "High";
+
+  @override
+void initState() {
+
+  super.initState();
+
+  titleController =
+      TextEditingController(
+          text: widget.notice.title);
+
+  descriptionController =
+      TextEditingController(
+          text: widget.notice.description);
+
+  selectedCategory =
+      widget.notice.category;
+
+  selectedDepartment =
+      widget.notice.department;
+      print(widget.notice.department);
+print(widget.notice.category);
+print(widget.notice.priority);
+
+print("Department = ${widget.notice.department}");
+print("Category = ${widget.notice.category}");
+print("Priority = ${widget.notice.priority}");
+
+  selectedPriority =
+      widget.notice.priority;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -274,12 +305,15 @@ final ApiService apiService = ApiService();
                           ),
 
                           items: [
-                            "Academic",
-                            "Exam",
-                            "Events",
-                            "Hostel",
-                            "Placement"
-                          ]
+  "Academic",
+  "Examination",
+  "Admission",
+  "Scholarship",
+  "Hostel",
+  "Placement",
+  "Events",
+  "Circular"
+]
                               .map(
                                 (e) =>
                                     DropdownMenuItem(
@@ -323,12 +357,12 @@ final ApiService apiService = ApiService();
                           ),
 
                           items: [
-                            "CSE",
-                            "ECE",
-                            "ME",
-                            "CE",
-                            "MBA"
-                          ]
+  "Computer Science",
+  "Electronics",
+  "Mechanical",
+  "Civil",
+  "MBA"
+]
                               .map(
                                 (e) =>
                                     DropdownMenuItem(
@@ -372,11 +406,10 @@ final ApiService apiService = ApiService();
                           ),
 
                           items: [
-                            "Low",
-                            "Medium",
-                            "High",
-                            "Urgent"
-                          ]
+  "Normal",
+  "Important",
+  "Urgent",
+]
                               .map(
                                 (e) =>
                                     DropdownMenuItem(

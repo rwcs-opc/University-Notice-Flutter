@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'edit_notice.dart';
+import '../services/api_service.dart';
+import '../models/notice_model.dart';
 
 class AdminNoticesScreen extends StatefulWidget {
   const AdminNoticesScreen({super.key});
@@ -11,36 +14,85 @@ class AdminNoticesScreen extends StatefulWidget {
 class _AdminNoticesScreenState
     extends State<AdminNoticesScreen> {
 
-  final List<Map<String, dynamic>> notices = [
-    {
-      "title": "Semester Exam Schedule",
-      "category": "Academic",
-      "status": "Published",
-      "date": "20 May 2026",
-      "color": Colors.green,
-    },
-    {
-      "title": "Campus Placement Drive",
-      "category": "Placement",
-      "status": "Draft",
-      "date": "18 May 2026",
-      "color": Colors.orange,
-    },
-    {
-      "title": "Hostel Fee Submission",
-      "category": "Hostel",
-      "status": "Published",
-      "date": "15 May 2026",
-      "color": Colors.green,
-    },
-    {
-      "title": "Annual Tech Fest",
-      "category": "Events",
-      "status": "Expired",
-      "date": "10 May 2026",
-      "color": Colors.red,
-    },
-  ];
+  // final List<Map<String, dynamic>> notices = [
+  //   {
+  //     "title": "Semester Exam Schedule",
+  //     "category": "Academic",
+  //     "status": "Published",
+  //     "date": "20 May 2026",
+  //     "color": Colors.green,
+  //   },
+  //   {
+  //     "title": "Campus Placement Drive",
+  //     "category": "Placement",
+  //     "status": "Draft",
+  //     "date": "18 May 2026",
+  //     "color": Colors.orange,
+  //   },
+  //   {
+  //     "title": "Hostel Fee Submission",
+  //     "category": "Hostel",
+  //     "status": "Published",
+  //     "date": "15 May 2026",
+  //     "color": Colors.green,
+  //   },
+  //   {
+  //     "title": "Annual Tech Fest",
+  //     "category": "Events",
+  //     "status": "Expired",
+  //     "date": "10 May 2026",
+  //     "color": Colors.red,
+  //   },
+  // ];
+
+  final ApiService apiService = ApiService();
+
+List<NoticeModel> notices = [];
+
+bool isLoading = true;
+
+
+@override
+void initState() {
+  super.initState();
+  loadNotices();
+}
+
+Future<void> loadNotices() async {
+  try {
+    final data = await apiService.getNotices();
+
+    setState(() {
+      notices = data;
+      isLoading = false;
+    });
+    
+  } 
+  
+  catch (e) {
+    print(e);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
+
+Color priorityColor(String priority) {
+  switch (priority) {
+    case "Urgent":
+      return Colors.red;
+
+    case "Important":
+      return Colors.orange;
+
+    case "Normal":
+      return Colors.green;
+
+    default:
+      return Colors.blue;
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -297,10 +349,7 @@ class _AdminNoticesScreenState
 
                                 decoration:
                                     BoxDecoration(
-                                  color: notice[
-                                          "color"]
-                                      .withOpacity(
-                                          0.15),
+                                  color: (priorityColor(notice.priority)).withOpacity(0.15),
 
                                   borderRadius:
                                       BorderRadius
@@ -311,8 +360,7 @@ class _AdminNoticesScreenState
                                 child: Icon(
                                   Icons
                                       .description,
-                                  color: notice[
-                                      "color"],
+                                   color: priorityColor(notice.priority),
                                 ),
                               ),
 
@@ -328,8 +376,7 @@ class _AdminNoticesScreenState
                                   children: [
 
                                     Text(
-                                      notice[
-                                          "title"],
+                                      notice.title,
                                       style:
                                           const TextStyle(
                                         fontSize:
@@ -345,8 +392,7 @@ class _AdminNoticesScreenState
                                             5),
 
                                     Text(
-                                      notice[
-                                          "category"],
+                                      notice.category,
                                     ),
                                   ],
                                 ),
@@ -394,24 +440,15 @@ class _AdminNoticesScreenState
                             children: [
 
                               Chip(
-                                backgroundColor:
-                                    notice[
-                                            "color"]
-                                        .withOpacity(
-                                            0.2),
+                               backgroundColor: priorityColor(notice.priority).withOpacity(0.2),
 
                                 label: Text(
-                                  notice[
-                                      "status"],
-                                  style:
-                                      TextStyle(
-                                    color: notice[
-                                        "color"],
-                                    fontWeight:
-                                        FontWeight
-                                            .bold,
-                                  ),
-                                ),
+  notice.priority,
+  style: TextStyle(
+    color: priorityColor(notice.priority),
+    fontWeight: FontWeight.bold,
+  ),
+),
                               ),
 
                               const Spacer(),
@@ -430,8 +467,7 @@ class _AdminNoticesScreenState
                                           5),
 
                                   Text(
-                                    notice[
-                                        "date"],
+                                    notice.date,
                                   ),
                                 ],
                               ),
@@ -446,21 +482,39 @@ class _AdminNoticesScreenState
 
                               Expanded(
                                 child:
-                                    OutlinedButton
-                                        .icon(
-                                  onPressed:
-                                      () {},
+                                //     OutlinedButton
+                                //         .icon(
+                                //   onPressed:
+                                //       () {},
 
-                                  icon:
-                                      const Icon(
-                                    Icons.edit,
-                                  ),
+                                //   icon:
+                                //       const Icon(
+                                //     Icons.edit,
+                                //   ),
 
-                                  label:
-                                      const Text(
-                                    "Edit",
-                                  ),
-                                ),
+                                //   label:
+                                //       const Text(
+                                //     "Edit",
+                                //   ),
+                                // ),
+                                OutlinedButton.icon(
+  onPressed: () {
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditNoticeScreen(
+          notice: notice,
+        ),
+      ),
+    );
+
+  },
+
+  icon: const Icon(Icons.edit),
+
+  label: const Text("Edit"),
+),
                               ),
 
                               const SizedBox(
@@ -477,8 +531,64 @@ class _AdminNoticesScreenState
                                         Colors.red,
                                   ),
 
-                                  onPressed:
-                                      () {},
+                                  // onPressed:
+                                  //     () {},
+                                  onPressed: () async {
+
+  bool? confirm = await showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text("Delete Notice"),
+      content: const Text(
+        "Are you sure you want to delete this notice?",
+      ),
+      actions: [
+
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          child: const Text("Cancel"),
+        ),
+
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          child: const Text("Delete"),
+        ),
+      ],
+    ),
+  );
+
+  if (confirm != true) return;
+
+  final response =
+      await apiService.deleteNotice(
+          notice.id);
+
+  if (response["status"] == true) {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content:
+            Text("Notice Deleted Successfully"),
+      ),
+    );
+
+    loadNotices();
+
+  } else {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.toString()),
+      ),
+    );
+
+  }
+
+},
 
                                   icon:
                                       const Icon(
