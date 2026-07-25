@@ -49,6 +49,64 @@ class _CreateNoticeScreenState
     "Important",
     "Urgent",
   ];
+  int getCategoryId(String category) {
+  switch (category) {
+    case "Academic":
+      return 2;
+
+    case "Examination":
+      return 3;
+
+    case "Events":
+      return 4;
+
+    case "Hostel":
+      return 5;
+
+    case "Placement":
+      return 6;
+
+    case "Scholarship":
+      return 7;
+
+    case "Admission":
+      return 8;
+
+    case "Circular":
+      return 9;
+
+    default:
+      return 2;
+  }
+}
+
+int getDepartmentId(String department) {
+  switch (department) {
+    case "CSE":
+     // return 1;
+      return 2;
+
+    case "ECE":
+      //return 2;
+       return 3;
+
+    case "ME":
+      //return 3;
+       return 4;
+
+    case "CE":
+     // return 4;
+       return 5;
+
+    case "MBA":
+     // return 5;
+       return 6;
+
+    default:
+      //return 1;
+       return 2;
+  }
+}
 
   Future<void> pickPublishDate() async {
     DateTime? picked =
@@ -379,6 +437,8 @@ class _CreateNoticeScreenState
       );
       return;
     }
+print("Selected Category = $selectedCategory");
+print("Category ID = ${getCategoryId(selectedCategory)}");
 
     try {
 
@@ -388,9 +448,12 @@ class _CreateNoticeScreenState
 
         description: descriptionController.text,
 
-        departmentId: 2,
+        departmentId: getDepartmentId(selectedDepartment),
 
-        categoryId: 2,
+        // categoryId: 2,
+        //departmentId: getDepartmentId(selectedDepartment),
+
+        categoryId: getCategoryId(selectedCategory),
 
         priority: selectedPriority,
 

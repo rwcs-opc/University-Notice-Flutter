@@ -109,4 +109,17 @@ class NoticeController extends Controller
             'message' => 'Notice Deleted Successfully'
         ]);
     }
+    public function category($category)
+{
+    $notices = Notice::with(['department', 'category'])
+        ->whereHas('category', function ($query) use ($category) {
+            $query->where('category_name', $category);
+        })
+        ->get();
+
+    return response()->json([
+        'status' => true,
+        'notices' => $notices
+    ]);
+}
 }
