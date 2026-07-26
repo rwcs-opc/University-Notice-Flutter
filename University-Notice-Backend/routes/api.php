@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DepartmentController;
-
+use App\Http\Controllers\Api\DashboardController;
 // Test API
 Route::get('/', function () {
     return response()->json([
@@ -45,3 +45,5 @@ Route::put('/notices/{id}', [NoticeController::class, 'update']);
 Route::delete('/notices/{id}', [NoticeController::class, 'destroy']);
 
 Route::get('/notices/category/{category}', [NoticeController::class, 'category']);
+
+Route::get('/dashboard/stats', [DashboardController::class, 'stats']);

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/notice_model.dart';
 import 'dart:io';
 import 'package:http_parser/http_parser.dart';
+import '../models/dashboard_model.dart';
 
 class ApiService {
   static const String baseUrl = "http://10.62.216.106:8000/api";
@@ -200,4 +201,17 @@ print(request.files.length);
 
     return jsonDecode(response.body);
   }
+  Future<DashboardModel> getDashboardStats() async {
+  final response = await http.get(
+    Uri.parse("$baseUrl/dashboard/stats"),
+  );
+
+  if (response.statusCode == 200) {
+    return DashboardModel.fromJson(
+      jsonDecode(response.body),
+    );
+  } else {
+    throw Exception("Failed to load dashboard");
+  }
+}
 }

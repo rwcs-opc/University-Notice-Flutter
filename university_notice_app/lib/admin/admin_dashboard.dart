@@ -6,11 +6,112 @@ import 'department_management.dart';
 import 'admin_details_screen.dart';
 import 'user_management.dart';
 
-class AdminDashboard extends StatelessWidget {
+import '../../models/dashboard_model.dart';
+import '../../services/api_service.dart';
+
+class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
 
   @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+
+  static Widget actionCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+
+      onTap: onTap,
+
+      child: Card(
+        elevation: 4,
+
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              Icon(icon, color: color, size: 35),
+
+              const SizedBox(height: 10),
+
+              Text(
+                title,
+                textAlign: TextAlign.center,
+
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget recentNotice(String title, String category) {
+    return Card(
+      child: ListTile(
+        leading: const CircleAvatar(child: Icon(Icons.description)),
+        title: Text(title),
+        subtitle: Text(category),
+      ),
+    );
+  }
+}
+
+class _AdminDashboardState extends State<AdminDashboard> {
+  final ApiService apiService = ApiService();
+
+DashboardModel? dashboard;
+
+bool isLoading = true;
+
+
+Future<void> loadDashboard() async {
+  try {
+    dashboard = await apiService.getDashboardStats();
+
+    setState(() {
+      isLoading = false;
+    });
+
+    print("Dashboard Loaded");
+    print("Total Notices: ${dashboard!.totalNotices}");
+    print("Total Users: ${dashboard!.totalUsers}");
+  } catch (e) {
+    print(e);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
+@override
+void initState() {
+  super.initState();
+  loadDashboard();
+}
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+  return const Scaffold(
+    body: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
 
@@ -96,7 +197,7 @@ class AdminDashboard extends StatelessWidget {
                 children: [
                   DashboardCard(
                     title: "Total Notices",
-                    value: "120",
+                    value: dashboard!.totalNotices.toString(),
                     icon: Icons.description,
                     color: Colors.blue,
                     onTap: () {
@@ -112,7 +213,7 @@ class AdminDashboard extends StatelessWidget {
 
                   DashboardCard(
                     title: "Users",
-                    value: "250",
+                    value: dashboard!.totalUsers.toString(),
                     icon: Icons.people,
                     color: Colors.green,
                     onTap: () {
@@ -128,7 +229,7 @@ class AdminDashboard extends StatelessWidget {
 
                   DashboardCard(
                     title: "Pending",
-                    value: "15",
+                    value: "0",
                     icon: Icons.pending_actions,
                     color: Colors.orange,
                     onTap: () {
@@ -145,7 +246,7 @@ class AdminDashboard extends StatelessWidget {
 
                   DashboardCard(
                     title: "Published",
-                    value: "105",
+                    value: dashboard!.totalNotices.toString(),
                     icon: Icons.check_circle,
                     color: Colors.purple,
                     onTap: () {
@@ -179,7 +280,7 @@ class AdminDashboard extends StatelessWidget {
                 mainAxisSpacing: 12,
 
                 children: [
-                  actionCard(
+                  AdminDashboard.actionCard(
                     context,
                     "Create Notice",
                     Icons.add_circle,
@@ -193,7 +294,7 @@ class AdminDashboard extends StatelessWidget {
                       );
                     },
                   ),
-                  actionCard(
+                  AdminDashboard.actionCard(
                     context,
                     "Categories",
                     Icons.category,
@@ -209,7 +310,7 @@ class AdminDashboard extends StatelessWidget {
                     },
                   ),
 
-                  actionCard(
+                  AdminDashboard.actionCard(
                     context,
                     "Departments",
                     Icons.school,
@@ -225,7 +326,7 @@ class AdminDashboard extends StatelessWidget {
                     },
                   ),
 
-                  actionCard(context, "Users", Icons.people, Colors.purple, () {
+                  AdminDashboard.actionCard(context, "Users", Icons.people, Colors.purple, () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -245,68 +346,14 @@ class AdminDashboard extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              recentNotice("Semester Exam Schedule Released", "Academic"),
+              AdminDashboard.recentNotice("Semester Exam Schedule Released", "Academic"),
 
-              recentNotice("Campus Placement Drive", "Placement"),
+              AdminDashboard.recentNotice("Campus Placement Drive", "Placement"),
 
-              recentNotice("Scholarship Application Open", "Scholarship"),
+              AdminDashboard.recentNotice("Scholarship Application Open", "Scholarship"),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  static Widget actionCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-
-      onTap: onTap,
-
-      child: Card(
-        elevation: 4,
-
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-
-            children: [
-              Icon(icon, color: color, size: 35),
-
-              const SizedBox(height: 10),
-
-              Text(
-                title,
-                textAlign: TextAlign.center,
-
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  static Widget recentNotice(String title, String category) {
-    return Card(
-      child: ListTile(
-        leading: const CircleAvatar(child: Icon(Icons.description)),
-        title: Text(title),
-        subtitle: Text(category),
       ),
     );
   }
