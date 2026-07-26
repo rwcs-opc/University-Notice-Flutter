@@ -38,19 +38,39 @@ class ApiService {
     return jsonDecode(response.body);
   }
 
-  Future<List<NoticeModel>> getNotices() async {
-    final response = await http.get(Uri.parse("$baseUrl/notices"));
+  // Future<List<NoticeModel>> getNotices() async {
+  //   final response = await http.get(Uri.parse("$baseUrl/notices"));
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
 
-      List notices = data["notices"];
+  //     List notices = data["notices"];
 
-      return notices.map((notice) => NoticeModel.fromJson(notice)).toList();
-    } else {
-      throw Exception("Failed to load notices");
-    }
+  //     return notices.map((notice) => NoticeModel.fromJson(notice)).toList();
+  //   } else {
+  //     throw Exception("Failed to load notices");
+  //   }
+  // }
+Future<List<NoticeModel>> getNotices() async {
+  final response = await http.get(Uri.parse("$baseUrl/notices"));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+
+    print("========== API RESPONSE ==========");
+    print(data);
+
+    List notices = data["notices"];
+
+    return notices
+        .map((notice) => NoticeModel.fromJson(notice))
+        .toList();
+  } else {
+    throw Exception("Failed to load notices");
   }
+}
+
+
   Future<List<NoticeModel>> getCategoryNotices(String category) async {
   final response = await http.get(
     Uri.parse("$baseUrl/notices"),
@@ -85,6 +105,7 @@ Future<Map<String, dynamic>> createNotice({
   required String publishDate,
   String? expiryDate,
   File? pdfFile,
+  File? imageFile,
 }) async {
 
   var request = http.MultipartRequest(
@@ -124,7 +145,18 @@ if (pdfFile != null) {
       contentType: MediaType("application", "pdf"),
     ),
   );
-} else {
+} 
+
+if (imageFile != null) {
+  request.files.add(
+    await http.MultipartFile.fromPath(
+      "image",
+      imageFile.path,
+    ),
+  );
+}
+
+else {
   print("No PDF Selected");
 }
 print(request.fields);

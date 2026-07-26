@@ -34,6 +34,7 @@ class NoticeController extends Controller
             'expiry_date' => 'nullable|date',
             // 'attachment' => 'nullable|string',
             'pdf' => 'nullable|file|mimes:pdf|max:10240',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'created_by' => 'required|exists:users,id',
         ]);
 
@@ -56,10 +57,27 @@ if ($request->hasFile('pdf')) {
 
 }
        // $notice = Notice::create($request->all());
-       $data = $request->all();
+//        $data = $request->all();
+
+// if ($request->hasFile('pdf')) {
+//     $data['pdf'] = $request->file('pdf')->store('notices', 'public');
+// }
+
+// $notice = Notice::create($data);
+$data = $request->all();
 
 if ($request->hasFile('pdf')) {
-    $data['pdf'] = $request->file('pdf')->store('notices', 'public');
+    $data['pdf'] = $request->file('pdf')->store(
+        'notices',
+        'public'
+    );
+}
+
+if ($request->hasFile('image')) {
+    $data['image'] = $request->file('image')->store(
+        'notice_images',
+        'public'
+    );
 }
 
 $notice = Notice::create($data);

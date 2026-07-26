@@ -27,6 +27,7 @@ class _CreateNoticeScreenState
   DateTime? expiryDate;
 
    PlatformFile? selectedPdf;
+   PlatformFile? selectedImage;
 
   final List<String> categories = [
     "Academic",
@@ -160,6 +161,22 @@ int getDepartmentId(String department) {
 
   }
 
+}
+
+Future<void> pickImage() async {
+  FilePickerResult? result =
+      await FilePicker.platform.pickFiles(
+    type: FileType.image,
+  );
+
+  if (result != null) {
+    setState(() {
+      selectedImage = result.files.first;
+    });
+
+    print("Selected Image: ${selectedImage!.name}");
+    print("Image Path: ${selectedImage!.path}");
+  }
 }
 
   @override
@@ -447,11 +464,11 @@ int getDepartmentId(String department) {
                 
                 Expanded(
   child: attachmentButton(
-    Icons.image,
-    "Upload Image",
-    Colors.green,
-    onTap: () {},
-  ),
+  Icons.image,
+  "Upload Image",
+  Colors.green,
+  onTap: pickImage,
+),
 ),
               ],
             ),
@@ -540,6 +557,9 @@ print("PDF Path: ${selectedPdf?.path}");
   pdfFile: selectedPdf == null
       ? null
       : File(selectedPdf!.path!),
+      imageFile: selectedImage == null
+    ? null
+    : File(selectedImage!.path!),
 );
       if (response["status"] == true) {
 

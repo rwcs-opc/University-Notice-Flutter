@@ -100,7 +100,12 @@ Future<void> loadNotices() async {
       isLoading = false;
     });
 
+    //print("Loaded ${notices.length} notices");
     print("Loaded ${notices.length} notices");
+
+for (var n in notices) {
+  print("${n.title} -> ${n.image}");
+}
   } catch (e) {
     print(e);
 
@@ -371,6 +376,8 @@ void searchNotice(String query) {
   child: GestureDetector(
 
     onTap: () {
+      print("PDF: ${notice.pdf}");
+      print("IMAGE: ${notice.image}");
 
       Navigator.push(
 
@@ -385,6 +392,7 @@ void searchNotice(String query) {
   priority: notice.priority,
   publishDate: notice.date,
   pdf: notice.pdf,
+  image: notice.image, 
 )
 
 //           NoticeDetailScreen(

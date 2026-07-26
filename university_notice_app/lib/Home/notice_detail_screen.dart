@@ -8,6 +8,7 @@ final String description;
 final String priority;
 final String publishDate;
 final String? pdf;
+final String? image;
 
 const NoticeDetailScreen({
   super.key,
@@ -16,10 +17,11 @@ const NoticeDetailScreen({
   required this.priority,
   required this.publishDate,
   this.pdf,
+  this.image,
 });
   @override
   Widget build(BuildContext context) {
-
+print("Image received: $image");
     return Scaffold(
 
       appBar: AppBar(
@@ -238,6 +240,52 @@ const NoticeDetailScreen({
           ],
         ),
       ),
+
+
+// if (image != null && image!.isNotEmpty)
+//   Padding(
+//     padding: const EdgeInsets.all(16),
+//     child: ClipRRect(
+//       borderRadius: BorderRadius.circular(15),
+//       child: Image.network(
+//         "http://10.62.216.106:8000/storage/$image",
+//         height: 220,
+//         width: double.infinity,
+//         fit: BoxFit.cover,
+//         errorBuilder: (context, error, stackTrace) {
+//           return const Text("Image not found");
+//         },
+//       ),
+//     ),
+//   ),
+
+///nnnn
+/// 
+/// 
+   if (image != null && image!.isNotEmpty)
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Image.network(
+        "http://10.62.216.106:8000/storage/$image",
+        width: double.infinity,
+        height: 220,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            height: 220,
+            alignment: Alignment.center,
+            color: Colors.grey.shade300,
+            child: const Text("Image not found"),
+          );
+        },
+      ),
+    ),
+  ),
+
+const SizedBox(height: 20),
+///broooooooooooo
 
       const SizedBox(height: 30),
 

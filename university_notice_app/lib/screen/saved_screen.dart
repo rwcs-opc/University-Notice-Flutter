@@ -454,6 +454,8 @@ class SavedScreen extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
+                print("Notice PDF: ${notice.pdf}");
+                print("Notice Image: ${notice.image}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -462,6 +464,8 @@ class SavedScreen extends StatelessWidget {
                       description: notice.description,
                       priority: notice.priority,
                       publishDate: notice.date,
+                         pdf: notice.pdf,
+                      image: notice.image,
                     ),
                   ),
                 );
