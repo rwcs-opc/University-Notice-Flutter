@@ -7,17 +7,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notice extends Model
 {
-    protected $fillable = [
-        'title',
-        'description',
-        'department_id',
-        'category_id',
-        'priority',
-        'attachment',
-        'publish_date',
-        'expiry_date',
-        'created_by',
-    ];
+   protected $fillable = [
+    'title',
+    'description',
+    'department_id',
+    'category_id',
+    'priority',
+    'pdf',
+    'attachment',
+    'publish_date',
+    'expiry_date',
+    'created_by',
+    'image',
+];
 
     public function department(): BelongsTo
     {

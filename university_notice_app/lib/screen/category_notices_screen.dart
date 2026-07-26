@@ -128,12 +128,20 @@ Future<void> loadCategoryNotices() async {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => NoticeDetailScreen(
-                        title: notice.title,
-                        description: notice.description,
-                        priority: notice.priority,
-                        publishDate: notice.date,
-                      ),
+                      builder: (_) =>
+                      //  NoticeDetailScreen(
+                      //   title: notice.title,
+                      //   description: notice.description,
+                      //   priority: notice.priority,
+                      //   publishDate: notice.date,
+                      // ),
+                      NoticeDetailScreen(
+  title: notice.title,
+  description: notice.description,
+  priority: notice.priority,
+  publishDate: notice.date,
+  pdf: notice.pdf,
+)
                     ),
                   );
                 },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NoticeDetailScreen extends StatelessWidget {
 
@@ -6,13 +7,15 @@ class NoticeDetailScreen extends StatelessWidget {
 final String description;
 final String priority;
 final String publishDate;
+final String? pdf;
 
-  const NoticeDetailScreen({
+const NoticeDetailScreen({
   super.key,
   required this.title,
   required this.description,
   required this.priority,
   required this.publishDate,
+  this.pdf,
 });
   @override
   Widget build(BuildContext context) {
@@ -259,7 +262,37 @@ final String publishDate;
               ),
             ),
 
-            onPressed: () {},
+            // onPressed: () {},
+           onPressed: () async {
+
+  if (pdf == null || pdf!.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("No PDF available"),
+      ),
+    );
+    return;
+  }
+
+  final url = "http://10.62.216.106:8000/storage/$pdf";
+
+  print("PDF URL: $url");
+
+  try {
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  } catch (e) {
+    print(e);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Error: $e"),
+      ),
+    );
+  }
+},
 
             icon: const Icon(Icons.picture_as_pdf),
 

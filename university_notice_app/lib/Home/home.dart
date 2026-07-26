@@ -378,12 +378,21 @@ void searchNotice(String query) {
 
         MaterialPageRoute(
 
-          builder: (context) => NoticeDetailScreen(
+          builder: (context) => 
+          NoticeDetailScreen(
   title: notice.title,
   description: notice.description,
   priority: notice.priority,
   publishDate: notice.date,
+  pdf: notice.pdf,
 )
+
+//           NoticeDetailScreen(
+//   title: notice.title,
+//   description: notice.description,
+//   priority: notice.priority,
+//   publishDate: notice.date,
+// )
         ),
       );
 

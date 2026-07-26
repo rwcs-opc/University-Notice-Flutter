@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
-
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 class CreateNoticeScreen extends StatefulWidget {
   const CreateNoticeScreen({super.key});
 
@@ -24,6 +25,8 @@ class _CreateNoticeScreenState
 
   DateTime? publishDate;
   DateTime? expiryDate;
+
+   PlatformFile? selectedPdf;
 
   final List<String> categories = [
     "Academic",
@@ -139,6 +142,25 @@ int getDepartmentId(String department) {
       });
     }
   }
+  Future<void> pickPdf() async {
+
+  FilePickerResult? result =
+      await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['pdf'],
+  );
+
+  if (result != null) {
+
+    setState(() {
+
+      selectedPdf = result.files.first;
+
+    });
+
+  }
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -357,6 +379,25 @@ int getDepartmentId(String department) {
                         pickExpiryDate,
                   ),
                 ),
+//                 Card(
+//   child: ListTile(
+//     leading: const Icon(
+//       Icons.picture_as_pdf,
+//       color: Colors.red,
+//     ),
+
+//     title: Text(
+//       selectedPdf == null
+//           ? "Select PDF"
+//           : selectedPdf!.name,
+//     ),
+
+//     trailing: ElevatedButton(
+//       onPressed: pickPdf,
+//       child: const Text("Choose"),
+//     ),
+//   ),
+// ),
               ],
             ),
 
@@ -378,23 +419,40 @@ int getDepartmentId(String department) {
             Row(
               children: [
 
-                Expanded(
-                  child: attachmentButton(
-                    Icons.picture_as_pdf,
-                    "Upload PDF",
-                    Colors.red,
-                  ),
-                ),
+                // Expanded(
+                //   child: attachmentButton(
+                //     Icons.picture_as_pdf,
+                //     "Upload PDF",
+                //     Colors.red,
+                //   ),
+                // ),
+               Expanded(
+  child: attachmentButton(
+    Icons.picture_as_pdf,
+    "Upload PDF",
+    Colors.red,
+    onTap: pickPdf,
+  ),
+),
 
                 const SizedBox(width: 10),
 
+                // Expanded(
+                //   child: attachmentButton(
+                //     Icons.image,
+                //     "Upload Image",
+                //     Colors.green,
+                //   ),
+                // ),
+                
                 Expanded(
-                  child: attachmentButton(
-                    Icons.image,
-                    "Upload Image",
-                    Colors.green,
-                  ),
-                ),
+  child: attachmentButton(
+    Icons.image,
+    "Upload Image",
+    Colors.green,
+    onTap: () {},
+  ),
+),
               ],
             ),
 
@@ -439,32 +497,50 @@ int getDepartmentId(String department) {
     }
 print("Selected Category = $selectedCategory");
 print("Category ID = ${getCategoryId(selectedCategory)}");
+// print("Selected PDF: $selectedPdf");
+// print("PDF Path: ${selectedPdf?.path}");
 
     try {
+print("Selected PDF: $selectedPdf");
+print("PDF Path: ${selectedPdf?.path}");
+      // final response = await apiService.createNotice(
 
+      //   title: titleController.text,
+
+      //   description: descriptionController.text,
+
+      //   departmentId: getDepartmentId(selectedDepartment),
+
+      //   // categoryId: 2,
+      //   //departmentId: getDepartmentId(selectedDepartment),
+
+      //   categoryId: getCategoryId(selectedCategory),
+
+      //   priority: selectedPriority,
+
+      //   publishDate:
+      //       "${publishDate!.year}-${publishDate!.month.toString().padLeft(2, '0')}-${publishDate!.day.toString().padLeft(2, '0')}",
+
+      //   expiryDate: expiryDate == null
+      //       ? null
+      //       : "${expiryDate!.year}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
+      // );
       final response = await apiService.createNotice(
+  title: titleController.text,
+  description: descriptionController.text,
+  departmentId: getDepartmentId(selectedDepartment),
+  categoryId: getCategoryId(selectedCategory),
+  priority: selectedPriority,
+  publishDate:
+      "${publishDate!.year}-${publishDate!.month.toString().padLeft(2, '0')}-${publishDate!.day.toString().padLeft(2, '0')}",
+  expiryDate: expiryDate == null
+      ? null
+      : "${expiryDate!.year}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
 
-        title: titleController.text,
-
-        description: descriptionController.text,
-
-        departmentId: getDepartmentId(selectedDepartment),
-
-        // categoryId: 2,
-        //departmentId: getDepartmentId(selectedDepartment),
-
-        categoryId: getCategoryId(selectedCategory),
-
-        priority: selectedPriority,
-
-        publishDate:
-            "${publishDate!.year}-${publishDate!.month.toString().padLeft(2, '0')}-${publishDate!.day.toString().padLeft(2, '0')}",
-
-        expiryDate: expiryDate == null
-            ? null
-            : "${expiryDate!.year}-${expiryDate!.month.toString().padLeft(2, '0')}-${expiryDate!.day.toString().padLeft(2, '0')}",
-      );
-
+  pdfFile: selectedPdf == null
+      ? null
+      : File(selectedPdf!.path!),
+);
       if (response["status"] == true) {
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -611,25 +687,46 @@ print("Category ID = ${getCategoryId(selectedCategory)}");
     );
   }
 
+  // Widget attachmentButton(
+  //   IconData icon,
+  //   String text,
+  //   Color color,
+  // ) {
+  //   return OutlinedButton.icon(
+  //     onPressed: () {},
+
+  //     icon: Icon(
+  //       icon,
+  //       color: color,
+  //     ),
+
+  //     label: Text(text),
+
+  //     style: OutlinedButton.styleFrom(
+  //       minimumSize:
+  //           const Size(double.infinity, 55),
+  //     ),
+  //   );
+  // }
   Widget attachmentButton(
-    IconData icon,
-    String text,
-    Color color,
-  ) {
-    return OutlinedButton.icon(
-      onPressed: () {},
+  IconData icon,
+  String text,
+  Color color, {
+  required VoidCallback onTap,
+}) {
+  return OutlinedButton.icon(
+    onPressed: onTap,
 
-      icon: Icon(
-        icon,
-        color: color,
-      ),
+    icon: Icon(
+      icon,
+      color: color,
+    ),
 
-      label: Text(text),
+    label: Text(text),
 
-      style: OutlinedButton.styleFrom(
-        minimumSize:
-            const Size(double.infinity, 55),
-      ),
-    );
-  }
+    style: OutlinedButton.styleFrom(
+      minimumSize: const Size(double.infinity, 55),
+    ),
+  );
+}
 }

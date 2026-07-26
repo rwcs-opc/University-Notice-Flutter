@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class NoticeController extends Controller
 {
@@ -31,7 +32,8 @@ class NoticeController extends Controller
             'priority' => 'required|in:Normal,Important,Urgent',
             'publish_date' => 'required|date',
             'expiry_date' => 'nullable|date',
-            'attachment' => 'nullable|string',
+            // 'attachment' => 'nullable|string',
+            'pdf' => 'nullable|file|mimes:pdf|max:10240',
             'created_by' => 'required|exists:users,id',
         ]);
 
@@ -42,7 +44,25 @@ class NoticeController extends Controller
             ], 422);
         }
 
-        $notice = Notice::create($request->all());
+
+
+
+        $pdfPath = null;
+
+if ($request->hasFile('pdf')) {
+
+    $pdfPath = $request->file('pdf')
+        ->store('notices', 'public');
+
+}
+       // $notice = Notice::create($request->all());
+       $data = $request->all();
+
+if ($request->hasFile('pdf')) {
+    $data['pdf'] = $request->file('pdf')->store('notices', 'public');
+}
+
+$notice = Notice::create($data);
 
         return response()->json([
             'status' => true,

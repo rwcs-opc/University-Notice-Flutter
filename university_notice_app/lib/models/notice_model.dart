@@ -70,6 +70,7 @@ class NoticeModel {
   final int views;
   final bool urgent;
   final String priority;
+  final String? pdf;
 
   NoticeModel({
     required this.id,
@@ -81,6 +82,7 @@ class NoticeModel {
     required this.views,
     required this.urgent,
     required this.priority,
+    this.pdf,
   });
 
   factory NoticeModel.fromJson(Map<String, dynamic> json) {
@@ -96,6 +98,7 @@ class NoticeModel {
       date: json["publish_date"] ?? "",
       priority: json["priority"] ?? "",
 
+      pdf: json["pdf"],
       // Your backend doesn't return these yet
       views: json["views"] ?? 0,
       urgent: json["priority"] == "High",
