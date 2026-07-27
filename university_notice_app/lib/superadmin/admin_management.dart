@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'add_admin_screen.dart';
 import '../../services/api_service.dart';
 import '../../models/user_model.dart';
+import 'edit_admin_screen.dart';
+
+
 class AdminManagementScreen extends StatefulWidget {
   const AdminManagementScreen({super.key});
 
@@ -369,7 +372,21 @@ else
 
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      // onPressed: () {},
+                      onPressed: () async {
+  final result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => EditAdminScreen(
+        admin: admin,
+      ),
+    ),
+  );
+
+  if (result == true) {
+    loadAdmins();
+  }
+},
                       icon: const Icon(
                         Icons.edit,
                         color: Colors.white,
