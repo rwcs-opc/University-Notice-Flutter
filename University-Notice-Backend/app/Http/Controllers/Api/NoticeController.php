@@ -13,8 +13,10 @@ class NoticeController extends Controller
     // Get All Notices
     public function index()
     {
-        $notices = Notice::with(['department', 'category', 'user'])->get();
-
+        // $notices = Notice::with(['department', 'category', 'user'])->get();
+        $notices = Notice::with(['department', 'category', 'user'])
+    ->latest()
+    ->get();
         return response()->json([
             'status' => true,
             'notices' => $notices

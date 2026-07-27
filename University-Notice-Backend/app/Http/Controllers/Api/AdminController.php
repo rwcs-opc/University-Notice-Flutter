@@ -45,4 +45,13 @@ class AdminController extends Controller
             ]
         ], 201);
     }
+    public function admins()
+{
+    $admins = User::where('role', 'admin')->get();
+
+    return response()->json([
+        'status' => true,
+        'admins' => $admins
+    ]);
+}
 }
