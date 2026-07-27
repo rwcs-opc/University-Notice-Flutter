@@ -257,7 +257,7 @@ Future<void> makeAdmin(int id) async {
   if (response.statusCode != 200) {
     throw Exception("Failed to make admin");
   }
-}
+ }
 Future<void> removeAdmin(int id) async {
   final response = await http.put(
     Uri.parse("$baseUrl/users/$id/remove-admin"),
@@ -266,5 +266,23 @@ Future<void> removeAdmin(int id) async {
   if (response.statusCode != 200) {
     throw Exception("Failed to remove admin");
   }
+}
+Future<Map<String, dynamic>> updateAdmin(
+  int id,
+  String name,
+  String email,
+) async {
+  final response = await http.put(
+    Uri.parse("$baseUrl/admins/$id"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "name": name,
+      "email": email,
+    }),
+  );
+
+  return jsonDecode(response.body);
 }
 }
