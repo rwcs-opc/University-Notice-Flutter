@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DashboardController;
+
 // Test API
 Route::get('/', function () {
     return response()->json([
@@ -47,3 +48,11 @@ Route::delete('/notices/{id}', [NoticeController::class, 'destroy']);
 Route::get('/notices/category/{category}', [NoticeController::class, 'category']);
 
 Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+
+Route::get('/admins', [AdminController::class, 'admins']);
+
+Route::get('/users', [AdminController::class, 'users']);
+
+Route::put('/users/{id}/make-admin', [AdminController::class, 'makeAdmin']);
+
+Route::put('/users/{id}/remove-admin', [AdminController::class, 'removeAdmin']);

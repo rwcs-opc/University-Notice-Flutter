@@ -1,7 +1,51 @@
 import 'package:flutter/material.dart';
-
-class AdminManagementScreen extends StatelessWidget {
+import 'add_admin_screen.dart';
+import '../../services/api_service.dart';
+import '../../models/user_model.dart';
+class AdminManagementScreen extends StatefulWidget {
   const AdminManagementScreen({super.key});
+
+  @override
+  State<AdminManagementScreen> createState() => _AdminManagementScreenState();
+
+  
+}
+
+// class _AdminManagementScreenState extends State<AdminManagementScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+class _AdminManagementScreenState extends State<AdminManagementScreen> {
+
+  final ApiService apiService = ApiService();
+
+  List<UserModel> admins = [];
+
+  bool isLoading = true;
+
+  @override
+void initState() {
+  super.initState();
+  loadAdmins();
+}
+
+Future<void> loadAdmins() async {
+  try {
+    final data = await apiService.getAdmins();
+
+    setState(() {
+      admins = data;
+      isLoading = false;
+    });
+
+    print("Admins Loaded: ${admins.length}");
+  } catch (e) {
+    print(e);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +54,15 @@ class AdminManagementScreen extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.indigo,
-        onPressed: () {},
+        // onPressed: () {},
+        onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const AddAdminScreen(),
+    ),
+  );
+},
         icon: const Icon(
           Icons.add,
           color: Colors.white,
@@ -123,28 +175,26 @@ class AdminManagementScreen extends StatelessWidget {
 
                           const SizedBox(width: 15),
 
-                          const Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
+                          Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
 
-                              Text(
-                                "18",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight:
-                                      FontWeight.bold,
-                                ),
-                              ),
+    Text(
+      admins.length.toString(),
+      style: const TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
 
-                              Text(
-                                "Total Admins",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
+    const Text(
+      "Total Admins",
+      style: TextStyle(
+        color: Colors.grey,
+      ),
+    ),
+  ],
+),
                         ],
                       ),
                     ),
@@ -173,33 +223,19 @@ class AdminManagementScreen extends StatelessWidget {
 
                   const SizedBox(height: 25),
 
-                  adminCard(
-                    name: "Dr. Raj Sharma",
-                    email: "raj@university.edu",
-                    department: "CSE Department",
-                    active: true,
-                  ),
-
-                  adminCard(
-                    name: "Priya Singh",
-                    email: "priya@university.edu",
-                    department: "ECE Department",
-                    active: true,
-                  ),
-
-                  adminCard(
-                    name: "Amit Das",
-                    email: "amit@university.edu",
-                    department: "Mechanical",
-                    active: false,
-                  ),
-
-                  adminCard(
-                    name: "Riya Gupta",
-                    email: "riya@university.edu",
-                    department: "Civil Engineering",
-                    active: true,
-                  ),
+                  if (isLoading)
+  const Center(
+    child: Padding(
+      padding: EdgeInsets.all(30),
+      child: CircularProgressIndicator(),
+    ),
+  )
+else
+  ...admins.map(
+  (admin) => adminCard(
+    admin: admin,
+  ),
+),
                 ],
               ),
             ),
@@ -209,12 +245,16 @@ class AdminManagementScreen extends StatelessWidget {
     );
   }
 
+  // Widget adminCard({
+  //   required String name,
+  //   required String email,
+  //   required String department,
+  //   required bool active,
+  // }) 
   Widget adminCard({
-    required String name,
-    required String email,
-    required String department,
-    required bool active,
-  }) {
+  required UserModel admin,
+})
+  {
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
 
@@ -257,7 +297,7 @@ class AdminManagementScreen extends StatelessWidget {
                       children: [
 
                         Text(
-                          name,
+                          admin.name,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight:
@@ -268,7 +308,7 @@ class AdminManagementScreen extends StatelessWidget {
                         const SizedBox(height: 4),
 
                         Text(
-                          email,
+                          admin.email,
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -277,7 +317,7 @@ class AdminManagementScreen extends StatelessWidget {
                         const SizedBox(height: 4),
 
                         Text(
-                          department,
+                          admin.role.toUpperCase(),
                           style: const TextStyle(
                             fontWeight:
                                 FontWeight.w500,
@@ -288,18 +328,20 @@ class AdminManagementScreen extends StatelessWidget {
                   ),
 
                   Chip(
-                    backgroundColor: active
-                        ? Colors.green.shade100
-                        : Colors.red.shade100,
+                    backgroundColor: Colors.green.shade100,
+                        // ? Colors.green.shade100
+                        // : Colors.red.shade100,
 
                     label: Text(
-                      active
-                          ? "Active"
-                          : "Inactive",
+                      // true
+                      //     ? "Active"
+                      //     : "Inactive",
+                      "Active",
                       style: TextStyle(
-                        color: active
-                            ? Colors.green
-                            : Colors.red,
+                        // color: true
+                        //     ? Colors.green
+                        //     : Colors.red,
+                        color: Colors.green,
                         fontWeight:
                             FontWeight.bold,
                       ),
@@ -349,7 +391,18 @@ class AdminManagementScreen extends StatelessWidget {
 
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      // onPressed: () {},
+                      onPressed: () async {
+  await apiService.removeAdmin(admin.id);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+  content: Text("${admin.name} removed as Admin"),
+),
+  );
+
+  loadAdmins();
+},
                       icon: const Icon(
                         Icons.delete,
                         color: Colors.white,

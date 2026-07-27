@@ -54,4 +54,93 @@ class AdminController extends Controller
         'admins' => $admins
     ]);
 }
+public function users()
+{
+    $users = User::where('role', 'user')->get();
+
+    return response()->json([
+        'status' => true,
+        'users' => $users
+    ]);
+}
+public function makeAdmin($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'status' => false,
+            'message' => 'User not found'
+        ], 404);
+    }
+
+    $user->role = 'admin';
+    $user->save();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'User promoted to Admin'
+    ]);
+}
+public function removeAdmin($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'status' => false,
+            'message' => 'User not found'
+        ], 404);
+    }
+
+    // Prevent removing the Super Admin
+    if ($user->role == 'super_admin') {
+        return response()->json([
+            'status' => false,
+            'message' => 'Super Admin cannot be removed.'
+        ], 403);
+    }
+
+    $user->role = 'user';
+    $user->save();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Admin removed successfully.'
+    ]);
+}
+public function updateAdmin(Request $request, $id)
+{
+    $admin = User::find($id);
+
+    if (!$admin) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Admin not found'
+        ], 404);
+    }
+
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    $admin->update([
+        'name' => $request->name,
+        'email' => $request->email,
+    ]);
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Admin updated successfully',
+        'admin' => $admin,
+    ]);
+}
 }

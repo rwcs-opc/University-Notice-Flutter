@@ -4,6 +4,7 @@ import '../models/notice_model.dart';
 import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 import '../models/dashboard_model.dart';
+import '../models/user_model.dart';
 
 class ApiService {
   static const String baseUrl = "http://10.62.216.106:8000/api";
@@ -212,6 +213,58 @@ print(request.files.length);
     );
   } else {
     throw Exception("Failed to load dashboard");
+  }
+}
+Future<List<UserModel>> getUsers() async {
+  final response = await http.get(
+    Uri.parse("$baseUrl/users"),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+
+    List users = data["users"];
+
+    return users
+        .map((user) => UserModel.fromJson(user))
+        .toList();
+  } else {
+    throw Exception("Failed to load users");
+  }
+}
+Future<List<UserModel>> getAdmins() async {
+  final response = await http.get(
+    Uri.parse("$baseUrl/admins"),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+
+    List admins = data["admins"];
+
+    return admins
+        .map((admin) => UserModel.fromJson(admin))
+        .toList();
+  } else {
+    throw Exception("Failed to load admins");
+  }
+}
+Future<void> makeAdmin(int id) async {
+  final response = await http.put(
+    Uri.parse("$baseUrl/users/$id/make-admin"),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception("Failed to make admin");
+  }
+}
+Future<void> removeAdmin(int id) async {
+  final response = await http.put(
+    Uri.parse("$baseUrl/users/$id/remove-admin"),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception("Failed to remove admin");
   }
 }
 }
