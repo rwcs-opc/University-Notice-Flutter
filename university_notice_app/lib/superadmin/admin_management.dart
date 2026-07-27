@@ -3,7 +3,7 @@ import 'add_admin_screen.dart';
 import '../../services/api_service.dart';
 import '../../models/user_model.dart';
 import 'edit_admin_screen.dart';
-
+import 'view_admin_screen.dart';
 
 class AdminManagementScreen extends StatefulWidget {
   const AdminManagementScreen({super.key});
@@ -22,6 +22,7 @@ class _AdminManagementScreenState extends State<AdminManagementScreen> {
   final ApiService apiService = ApiService();
 
   List<UserModel> admins = [];
+  List<UserModel> filteredAdmins = [];
 
   bool isLoading = true;
 
@@ -37,6 +38,7 @@ Future<void> loadAdmins() async {
 
     setState(() {
       admins = data;
+     filteredAdmins = data;
       isLoading = false;
     });
 
@@ -48,6 +50,22 @@ Future<void> loadAdmins() async {
       isLoading = false;
     });
   }
+ }
+ void searchAdmin(String query) {
+  setState(() {
+    if (query.isEmpty) {
+      filteredAdmins = admins;
+    } else {
+      filteredAdmins = admins.where((admin) {
+        return admin.name
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            admin.email
+                .toLowerCase()
+                .contains(query.toLowerCase());
+      }).toList();
+    }
+  });
 }
 
   @override
@@ -65,7 +83,7 @@ Future<void> loadAdmins() async {
       builder: (_) => const AddAdminScreen(),
     ),
   );
-},
+ },
         icon: const Icon(
           Icons.add,
           color: Colors.white,
@@ -197,7 +215,7 @@ Future<void> loadAdmins() async {
       ),
     ),
   ],
-),
+ ),
                         ],
                       ),
                     ),
@@ -207,6 +225,7 @@ Future<void> loadAdmins() async {
 
                   // SEARCH BAR
                   TextField(
+                    onChanged: searchAdmin,
                     decoration: InputDecoration(
                       hintText: "Search Admins",
 
@@ -233,12 +252,13 @@ Future<void> loadAdmins() async {
       child: CircularProgressIndicator(),
     ),
   )
-else
-  ...admins.map(
+ else
+  // ...admins.map(
+  ...filteredAdmins.map(
   (admin) => adminCard(
     admin: admin,
   ),
-),
+ ),
                 ],
               ),
             ),
@@ -256,7 +276,7 @@ else
   // }) 
   Widget adminCard({
   required UserModel admin,
-})
+ })
   {
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
@@ -360,7 +380,17 @@ else
 
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      // onPressed: () {},
+                      onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => ViewAdminScreen(
+        admin: admin,
+      ),
+    ),
+  );
+ },
                       icon: const Icon(
                         Icons.visibility,
                       ),
@@ -386,7 +416,7 @@ else
   if (result == true) {
     loadAdmins();
   }
-},
+ },
                       icon: const Icon(
                         Icons.edit,
                         color: Colors.white,
@@ -415,11 +445,11 @@ else
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
   content: Text("${admin.name} removed as Admin"),
-),
+ ),
   );
 
   loadAdmins();
-},
+ },
                       icon: const Icon(
                         Icons.delete,
                         color: Colors.white,
@@ -443,4 +473,4 @@ else
       ),
     );
   }
-}
+ }
