@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'edit_notice.dart';
 import '../services/api_service.dart';
 import '../models/notice_model.dart';
-import '../provider/theme_provider.dart';
 
 class AdminNoticesScreen extends StatefulWidget {
   const AdminNoticesScreen({super.key});

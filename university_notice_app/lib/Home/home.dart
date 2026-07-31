@@ -266,7 +266,7 @@ void searchNotice(String query) {
   style: TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.bold,
-    color: Theme.of(context).colorScheme.onBackground,
+    color: Theme.of(context).colorScheme.onSurface,
   ),
 )
             ),

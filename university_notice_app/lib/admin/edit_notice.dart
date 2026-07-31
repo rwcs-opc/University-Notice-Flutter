@@ -295,7 +295,7 @@ print("Priority = ${widget.notice.priority}");
                         child:
                             DropdownButtonFormField<
                                 String>(
-                          value:
+                          initialValue:
                               selectedCategory,
 
                           decoration:
@@ -347,7 +347,7 @@ print("Priority = ${widget.notice.priority}");
                         child:
                             DropdownButtonFormField<
                                 String>(
-                          value:
+                          initialValue:
                               selectedDepartment,
 
                           decoration:
@@ -396,7 +396,7 @@ print("Priority = ${widget.notice.priority}");
                         child:
                             DropdownButtonFormField<
                                 String>(
-                          value:
+                          initialValue:
                               selectedPriority,
 
                           decoration:

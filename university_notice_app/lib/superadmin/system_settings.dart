@@ -183,7 +183,7 @@ class _SystemSettingsScreenState
                       ),
 
                       child: DropdownButtonFormField(
-                        value: selectedLanguage,
+                        initialValue: selectedLanguage,
                         decoration:
                             const InputDecoration(
                           border: InputBorder.none,

@@ -641,7 +641,7 @@ print("PDF Path: ${selectedPdf?.path}");
         const SizedBox(height: 8),
 
         DropdownButtonFormField(
-          value: value,
+          initialValue: value,
 
           items: items.map((item) {
             return DropdownMenuItem(

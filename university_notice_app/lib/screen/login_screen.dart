@@ -6,8 +6,6 @@ import '../services/api_service.dart';
 
 import 'register_screen.dart';
 import 'bottom_nav_screen.dart';
-import '../admin/admin_dashboard.dart';
-import '../superadmin/superadmindashboard.dart';
 import '../admin/admin_bottom_nav.dart';
 import '../superadmin/super_admin_nav.dart';
 import 'auth/forgot_password_screen.dart';
