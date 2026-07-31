@@ -77,26 +77,72 @@ DashboardModel? dashboard;
 
 bool isLoading = true;
 
-
 Future<void> loadDashboard() async {
   try {
-    dashboard = await apiService.getDashboardStats();
+    print("Loading Dashboard...");
+
+    final data = await apiService.getDashboardStats();
+
+    print("Dashboard Loaded");
+    print("Total Notices: ${data.totalNotices}");
+    print("Total Users: ${data.totalUsers}");
+
+    if (!mounted) return;
 
     setState(() {
+      dashboard = data;
       isLoading = false;
     });
 
-    print("Dashboard Loaded");
-    print("Total Notices: ${dashboard!.totalNotices}");
-    print("Total Users: ${dashboard!.totalUsers}");
   } catch (e) {
-    print(e);
+    print("Dashboard Error: $e");
+
+    if (!mounted) return;
 
     setState(() {
       isLoading = false;
     });
   }
 }
+// Future<void> loadDashboard() async {
+//   try {
+//     // dashboard = await apiService.getDashboardStats();
+
+//     // setState(() {
+//     //   isLoading = false;
+//     // });
+
+//     Future<void> loadDashboard() async {
+//   try {
+//     dashboard = await apiService.getDashboardStats();
+
+//     if (!mounted) return;
+
+//     setState(() {
+//       isLoading = false;
+//     });
+
+//   } catch (e) {
+
+//     if (!mounted) return;
+
+//     setState(() {
+//       isLoading = false;
+//     });
+//   }
+// }
+
+//     print("Dashboard Loaded");
+//     print("Total Notices: ${dashboard!.totalNotices}");
+//     print("Total Users: ${dashboard!.totalUsers}");
+//   } catch (e) {
+//     print(e);
+
+//     setState(() {
+//       isLoading = false;
+//     });
+//   }
+// }
 @override
 void initState() {
   super.initState();
@@ -112,21 +158,40 @@ void initState() {
     ),
   );
 }
+    // return Scaffold(
+    //   backgroundColor: Colors.grey.shade100,
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+  
 
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
+        // backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title:  Text(
           "Admin Dashboard",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          // style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+  color: Theme.of(context).colorScheme.onPrimary,
+  fontWeight: FontWeight.bold,
+),
+          
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 15),
-            child: Icon(Icons.notifications, color: Colors.white),
-          ),
-        ],
+        // actions: const [
+        //   Padding(
+        //     padding: EdgeInsets.only(right: 15),
+        //     child:
+        //      Icon(Icons.notifications, color: Colors.white),
+        //   ),
+        // ],
+        actions: [
+  Padding(
+    padding: const EdgeInsets.only(right: 15),
+    child: Icon(
+      Icons.notifications,
+      color: Theme.of(context).colorScheme.onPrimary,
+    ),
+  ),
+],
       ),
 
       drawer: Drawer(
@@ -152,7 +217,8 @@ void initState() {
                   Text(
                     "Admin Panel",
                     style: TextStyle(
-                      color: Colors.white,
+                       color: Colors.white,
+                     
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),

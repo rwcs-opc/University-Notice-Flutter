@@ -10,6 +10,8 @@ import '../admin/admin_dashboard.dart';
 import '../superadmin/superadmindashboard.dart';
 import '../admin/admin_bottom_nav.dart';
 import '../superadmin/super_admin_nav.dart';
+import 'auth/forgot_password_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -86,15 +88,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 10),
 
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: TextButton(
+                //     onPressed: () {},
+                //     child: const Text(
+                //       "Forgot Password?",
+                //     ),
+                //   ),
+                // ),
                 Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Forgot Password?",
-                    ),
-                  ),
-                ),
+  alignment: Alignment.centerRight,
+  child: TextButton(
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ForgotPasswordScreen(),
+        ),
+      );
+    },
+    child: const Text(
+      "Forgot Password?",
+    ),
+  ),
+),
 
                 const SizedBox(height: 20),
 

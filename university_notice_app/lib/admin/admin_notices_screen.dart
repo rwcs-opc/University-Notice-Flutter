@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'edit_notice.dart';
 import '../services/api_service.dart';
 import '../models/notice_model.dart';
+import '../provider/theme_provider.dart';
 
 class AdminNoticesScreen extends StatefulWidget {
   const AdminNoticesScreen({super.key});
@@ -98,25 +99,48 @@ Color priorityColor(String priority) {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      // backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).colorScheme.primary,
 
-      floatingActionButton:
-          FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
-        onPressed: () {},
+       floatingActionButton:
+    //       FloatingActionButton.extended(
+    //     // backgroundColor: Colors.blue,
+    //     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    //     onPressed: () {},
 
-        icon: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+    //     icon: const Icon(
+    //       Icons.add,
+    //       color: Colors.white,
+    //     ),
 
-        label: const Text(
-          "Create Notice",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
+    //     label:  Text(
+    //       "Create Notice",
+    //       style: TextStyle(
+    //          color: Colors.white,
+    //       // style: TextStyle(
+    //       // color: Theme.of(context).colorScheme.onPrimary,
+    //  //color: Theme.of(context).colorScheme.onSurface,
+    //       ),
+    //     ),
+    //   ),
+
+
+    FloatingActionButton.extended(
+  backgroundColor: Theme.of(context).colorScheme.primary,
+  onPressed: () {},
+
+  icon: Icon(
+    Icons.add,
+    color: Theme.of(context).colorScheme.onPrimary,
+  ),
+
+  label: Text(
+    "Create Notice",
+    style: TextStyle(
+      color: Theme.of(context).colorScheme.onPrimary,
+    ),
+  ),
+),
 
       body: CustomScrollView(
         slivers: [
@@ -126,7 +150,8 @@ Color priorityColor(String priority) {
           SliverAppBar(
             expandedHeight: 250,
             pinned: true,
-            backgroundColor: Colors.blue,
+            // backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
             flexibleSpace: FlexibleSpaceBar(
               background: Container(

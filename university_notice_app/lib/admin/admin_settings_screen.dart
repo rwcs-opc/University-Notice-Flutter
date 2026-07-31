@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../provider/theme_provider.dart';
 class AdminSettingsScreen extends StatefulWidget {
   const AdminSettingsScreen({super.key});
 
@@ -197,14 +198,24 @@ class _AdminSettingsScreenState
                     title: "Dark Mode",
                     subtitle:
                         "Enable dark theme",
-                    trailing: Switch(
-                      value: darkMode,
-                      onChanged: (value) {
-                        setState(() {
-                          darkMode = value;
-                        });
-                      },
-                    ),
+                    trailing: 
+                    // Switch(
+                    //   value: darkMode,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       darkMode = value;
+                    //     });
+                    //   },
+                    // ),
+                    Switch(
+  value: Provider.of<ThemeNotifier>(context).isDark,
+  onChanged: (value) {
+    Provider.of<ThemeNotifier>(
+      context,
+      listen: false,
+    ).toggleTheme(value);
+  },
+)
                   ),
 
                   settingsCard(

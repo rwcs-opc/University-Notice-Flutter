@@ -7,7 +7,8 @@ import '../models/dashboard_model.dart';
 import '../models/user_model.dart';
 
 class ApiService {
-  static const String baseUrl = "http://10.62.216.106:8000/api";
+  // static const String baseUrl = "http://10.62.216.106:8000/api";
+  static const String baseUrl = "http://172.25.16.106:8000/api";
 
   // LOGIN
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -280,6 +281,55 @@ Future<Map<String, dynamic>> updateAdmin(
     body: jsonEncode({
       "name": name,
       "email": email,
+    }),
+  );
+
+  return jsonDecode(response.body);
+}
+Future<Map<String, dynamic>> forgotPassword(String email) async {
+  final response = await http.post(
+    Uri.parse("$baseUrl/forgot-password"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "email": email,
+    }),
+  );
+
+  return jsonDecode(response.body);
+}
+Future<Map<String, dynamic>> verifyOtp({
+  required String email,
+  required String otp,
+}) async {
+  final response = await http.post(
+    Uri.parse("$baseUrl/verify-otp"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "email": email,
+      "otp": otp,
+    }),
+  );
+
+  return jsonDecode(response.body);
+}
+Future<Map<String, dynamic>> resetPassword({
+  required String email,
+  required String password,
+  required String confirmPassword,
+}) async {
+  final response = await http.post(
+    Uri.parse("$baseUrl/reset-password"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode({
+      "email": email,
+      "password": password,
+      "password_confirmation": confirmPassword,
     }),
   );
 

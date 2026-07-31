@@ -1,0 +1,81 @@
+// import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+// class ThemeNotifier extends ChangeNotifier {
+//   bool _isDark = false;
+
+//   bool get isDark => _isDark;
+
+//   ThemeMode get themeMode =>
+//       _isDark ? ThemeMode.dark : ThemeMode.light;
+
+//   ThemeNotifier() {
+//   loadTheme();
+// }
+
+//   Future<void> loadTheme() async {
+//     final prefs = await SharedPreferences.getInstance();
+
+//     _isDark = prefs.getBool("darkMode") ?? false;
+
+//     notifyListeners();
+//   }
+
+//   Future<void> toggleTheme(bool value) async {
+//     _isDark = value;
+
+//     final prefs = await SharedPreferences.getInstance();
+
+//     await prefs.setBool("darkMode", value);
+
+//     notifyListeners();
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+// class ThemeNotifier extends ChangeNotifier {
+//   bool _isDark = false;
+
+//   bool get isDark => _isDark;
+
+//   ThemeMode get themeMode =>
+//       _isDark ? ThemeMode.dark : ThemeMode.light;
+
+//   ThemeNotifier() {
+//     loadTheme();
+//   }
+
+//   Future<void> loadTheme() async {
+//     final prefs = await SharedPreferences.getInstance();
+
+//     _isDark = prefs.getBool("darkMode") ?? false;
+
+//     notifyListeners();
+//   }
+
+//   Future<void> toggleTheme(bool value) async {
+//     _isDark = value;
+
+//     final prefs = await SharedPreferences.getInstance();
+
+//     await prefs.setBool("darkMode", value);
+
+//     notifyListeners();
+//   }
+// }
+
+import 'package:flutter/material.dart';
+
+class ThemeNotifier extends ChangeNotifier {
+  bool isDark = false;
+
+  ThemeMode get currentTheme =>
+      isDark ? ThemeMode.dark : ThemeMode.light;
+
+  void toggleTheme(bool value) {
+    isDark = value;
+    notifyListeners();
+  }
+}
