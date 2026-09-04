@@ -267,8 +267,10 @@ print("Image received: $image");
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Image.network(
-        "http://10.62.216.106:8000/storage/$image",
+      child:
+       Image.network(
+        //"http://10.62.216.106:8000/storage/$image",
+        "http://172.25.16.106:8000/storage/$image",
         width: double.infinity,
         height: 220,
         fit: BoxFit.cover,
@@ -322,7 +324,8 @@ const SizedBox(height: 20),
     return;
   }
 
-  final url = "http://10.62.216.106:8000/storage/$pdf";
+  //final url = "http://10.62.216.106:8000/storage/$pdf";
+  final url = "http://172.25.16.106:8000/storage/$pdf";
 
   print("PDF URL: $url");
 

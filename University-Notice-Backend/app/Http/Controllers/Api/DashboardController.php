@@ -28,4 +28,13 @@ class DashboardController extends Controller
                 ->get()
         ]);
     }
+    public function dashboard()
+{
+    return response()->json([
+        'status' => true,
+        'users' => User::count(),
+        'notices' => Notice::count(),
+        'admins' => User::where('role', 'admin')->count(),
+    ]);
+}
 }

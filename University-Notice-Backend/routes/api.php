@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DashboardController;
-
+use App\Http\Controllers\Api\ForgotPasswordController;
 // Test API
 Route::get('/', function () {
     return response()->json([
@@ -56,3 +56,12 @@ Route::get('/users', [AdminController::class, 'users']);
 Route::put('/users/{id}/make-admin', [AdminController::class, 'makeAdmin']);
 
 Route::put('/users/{id}/remove-admin', [AdminController::class, 'removeAdmin']);
+
+Route::put('/admins/{id}', [AdminController::class, 'updateAdmin']);
+
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp']);
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp']);
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
+
+Route::get('/dashboard', [DashboardController::class, 'dashboard']);
